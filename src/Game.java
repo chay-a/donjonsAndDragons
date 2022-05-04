@@ -31,7 +31,7 @@ public class Game {
             character = this.selectCharacterType(scanner);
             // Choose character name
             character.setName(this.chooseCharacterName(scanner));
-            this.displayCharacterInfo(character);
+            System.out.println(character);
             // is information valid ?
             isInfoValid = isInformationValid(scanner, isInfoValid);
         }
@@ -67,16 +67,6 @@ public class Game {
             this.quitGame();
         }
         return userInput;
-    }
-
-    /**
-     * Display all character information
-     * @param character Character
-     */
-    private void displayCharacterInfo(Character character) {
-        System.out.println("nom du personnage : " + character.getName());
-        System.out.println("vie du personnage : " + character.getLife() + ", max : " + character.getMaxLife());
-        System.out.println("force du personnage : " + character.getStrength() + ", max : " + character.getMaxStrength());
     }
 
     /**

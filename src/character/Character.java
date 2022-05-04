@@ -107,4 +107,11 @@ public abstract class Character {
     public int getMaxStrength() {
         return maxStrength;
     }
+
+    @Override
+    public String toString() {
+        return "Le nom de votre personnage : " + this.name + "\n" +
+                "La vie de votre personnage : " + this.life + ", max : " + this.maxLife + "\n" +
+                "La force de votre personnage : " + this.strength + ", max : " + this.maxStrength;
+    }
 }
