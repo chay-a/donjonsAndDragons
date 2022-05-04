@@ -1,3 +1,5 @@
+import board.Board;
+import board.Cell;
 import character.Character;
 import character.Warrior;
 import character.Wizard;
@@ -7,16 +9,8 @@ import java.util.Scanner;
 public class Game {
 
     public static void main(String[] args) {
-
         Game game = new Game();
         game.start();
-
-        // Create board
-
-        // Loop until end board
-            // Throw dice
-            // Check board
-        // End loop
     }
 
     /**
@@ -25,7 +19,7 @@ public class Game {
     private void createCharacter() {
         Scanner scanner = new Scanner(System.in);
         Character character;
-        Boolean isInfoValid = false;
+        boolean isInfoValid = false;
         while(!isInfoValid) {
             // Choose character type
             character = this.selectCharacterType(scanner);
@@ -109,5 +103,43 @@ public class Game {
      */
     public void start() {
         this.createCharacter();
+        Board board = this.createBoard();
+        this.playGame(board);
+        this.askToRestart();
+    }
+
+    /**
+     * Play the game while user not at the end of the board
+     * @param board Board
+     */
+    private void playGame(Board board) {
+        int positionPlayer = 0;
+        while(positionPlayer< board.getBoardLength()) {
+            Dice dice = new Dice();
+            positionPlayer += dice.throwDice();
+            System.out.println(positionPlayer + "/" + board.getBoardLength());
+        }
+    }
+
+    /**
+     * Ask the user if he/she wants to replay if yes restart the game else quit the game
+     */
+    private void askToRestart() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Voulez-vous recommencer (recommencer) ou quitter (quitter) ?");
+        String userInput = scanner.nextLine().toLowerCase();
+        if ("recommencer".equalsIgnoreCase(userInput)) {
+            this.start();
+        } else if ("quitter".equalsIgnoreCase((userInput))) {
+            this.quitGame();
+        }
+    }
+
+    /**
+     * Create the board for the game
+     * @return Board
+     */
+    private Board createBoard() {
+        return new Board();
     }
 }

@@ -19,16 +19,16 @@ public class Cell {
 
     /**
      * Get the value of the case
-     * @return String
+     * @return Object
      */
-    public String getValue() {
+    public Object getValue() {
         return value;
     }
 
 
     /**
      * Set the value of the case
-     * @param value
+     * @param value String
      */
     public void setValue(String value) {
         this.value = value;
