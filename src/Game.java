@@ -24,7 +24,7 @@ public class Game {
      */
     private void createCharacter() {
         Scanner scanner = new Scanner(System.in);
-        Character character = null;
+        Character character;
         Boolean isInfoValid = false;
         while(!isInfoValid) {
             // Choose character type
