@@ -5,6 +5,7 @@ import character.Warrior;
 import character.Wizard;
 import exceptions.OutOfBoardCharacterException;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Scanner;
 
 public class Game {
@@ -79,21 +80,28 @@ public class Game {
     private Character selectCharacterType(Scanner scanner) {
         Character character = null;
         while (character == null) {
-            System.out.println("Entrez votre classe (Guerrier ou Magicien) ou quitter le jeu (quitter)");
-            String userInput = scanner.nextLine().toLowerCase();
-            switch (userInput) {
-                case "guerrier":
-                    character = new Warrior();
-                    break;
-                case "magicien":
-                    character = new Wizard();
-                    break;
-                case "quitter":
-                    this.quitGame();
-                    break;
-                default:
-                    System.out.println("Personnage sélectionné non valide");
-                    break;
+            System.out.println("Entrez votre classe (Warrior ou Wizard) ou quitter le jeu (quitter)");
+            String userInput = scanner.nextLine();
+            if (userInput.equals("quitter")){
+                this.quitGame();
+            }
+            // Introspection Reflection
+            try{
+                Class<?> characterType = Class.forName("character."+userInput);
+                try{
+                   character = (Character) characterType.getDeclaredConstructor().newInstance();
+                } catch (InstantiationException e) {
+                    System.out.println("Il y a eu un problème dans l'instaciation");
+                } catch (IllegalAccessException e) {
+                    System.out.println("Il y a un problème quelque part de type accès");
+                } catch (NoSuchMethodException e) {
+                    System.out.println("Il n'y a pas cette méthode");
+                } catch (InvocationTargetException e) {
+                    System.out.println("La cible n'a pas pu être invoquée");
+                }
+
+            }catch (ClassNotFoundException e) {
+                System.out.println("Personnage sélectionné non valide");
             }
         }
 
