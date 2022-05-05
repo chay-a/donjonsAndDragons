@@ -1,16 +1,18 @@
 package character;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class Character {
     private String name;
     private int life;
     private int strength;
     private int maxLife;
     private int maxStrength;
-
-
-    public Character() {
-
-    }
+    public static Map<String, String> allCharacters = new HashMap<String, String>() {{
+        put("Guerrier", "character.Warrior");
+        put("Magicien", "character.Wizard");
+    }};
 
     /**
      * Hydrate the object with every value sent in parameters and name set to null
@@ -24,7 +26,7 @@ public abstract class Character {
     }
 
     /**
-     * Hydtrate the object with every values define in parameters
+     * Hydtrate the object with every value define in parameters
      * @param name name of the object
      * @param life life of the object
      * @param strength strength of the object
@@ -108,9 +110,24 @@ public abstract class Character {
         return maxStrength;
     }
 
+    /**
+     * Get the French name of the character type
+     * @param className String
+     * @return String
+     */
+    private static String getInternalNameFromClassName(String className) {
+        for (String frName : allCharacters.keySet()) {
+            String cName = (String) allCharacters.get(frName);
+            if (className.equals(cName)) {
+                return frName;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
-        return "Le nom de votre personnage : " + this.name + "\n" +
+        return "Votre personnage est : " + Character.getInternalNameFromClassName(this.getClass().getName()) + "\n" + "Le nom de votre personnage : " + this.name + "\n" +
                 "La vie de votre personnage : " + this.life + ", max : " + this.maxLife + "\n" +
                 "La force de votre personnage : " + this.strength + ", max : " + this.maxStrength;
     }

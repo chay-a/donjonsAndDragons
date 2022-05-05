@@ -1,47 +1,55 @@
 import board.Board;
-import board.Cell;
 import character.Character;
-import character.Warrior;
-import character.Wizard;
 import exceptions.OutOfBoardCharacterException;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Scanner;
 
 public class Game {
 
+    private Character character;
+    private Board board;
+
     public static void main(String[] args) {
+     //   System.out.println(System.getProperty("user.language")+"-"+System.getProperty("user.country"));
         Game game = new Game();
         game.start();
     }
 
     /**
-     * Create a character from the user selection
+     * Hydrate character and board with the creation of a new character and a new board
      */
-    private void createCharacter() {
-        Scanner scanner = new Scanner(System.in);
-        Character character;
-        boolean isInfoValid = false;
-        while(!isInfoValid) {
-            // Choose character type
-            character = this.selectCharacterType(scanner);
-            // Choose character name
-            character.setName(this.chooseCharacterName(scanner));
-            System.out.println(character);
-            // is information valid ?
-            isInfoValid = isInformationValid(scanner, isInfoValid);
-        }
+    public Game() {
+        this.character = this.createCharacter();
+        this.board = this.createBoard();
     }
 
     /**
-     * Ask the user if the information are valid
-     * @param scanner Scanner
+     * Create a character from the user selection
+     * @return Character
+     */
+    private Character createCharacter() {
+        Character character= null;
+        boolean isInfoValid = false;
+        while(!isInfoValid) {
+            // Choose character type
+            character = this.selectCharacterType();
+            // Choose character name
+            character.setName(this.chooseCharacterName());
+            System.out.println(character);
+            // is information valid ?
+            isInfoValid = isInformationValid(isInfoValid);
+        }
+        return character;
+    }
+
+    /**
+     * Ask the user if the information provided are valid
      * @param isInfoValid boolean
      * @return boolean
      */
-    private Boolean isInformationValid(Scanner scanner, boolean isInfoValid) {
+    private Boolean isInformationValid(boolean isInfoValid) {
         System.out.println("Voulez-vous valider ce personnage ? (Oui/Non) ou quitter le jeu (quitter)");
-        String userInput = scanner.nextLine();
+        String userInput = userInput();
         if ("quitter".equalsIgnoreCase(userInput)) {
             this.quitGame();
         } else if ("oui".equalsIgnoreCase(userInput)) {
@@ -53,12 +61,11 @@ public class Game {
 
     /**
      * Ask the user for the character name
-     * @param scanner Scanner
      * @return String
      */
-    private String chooseCharacterName(Scanner scanner) {
+    private String chooseCharacterName() {
         System.out.println("Entrez le nom de votre personnage ou quitter le jeu (quitter)");
-        String userInput = scanner.nextLine();
+        String userInput = userInput();
         if ("quitter".equalsIgnoreCase(userInput)) {
             this.quitGame();
         }
@@ -75,32 +82,21 @@ public class Game {
 
     /**
      * Select character type
-     * @param scanner Scanner
      */
-    private Character selectCharacterType(Scanner scanner) {
+    private Character selectCharacterType() {
         Character character = null;
         while (character == null) {
-            System.out.println("Entrez votre classe (Warrior ou Wizard) ou quitter le jeu (quitter)");
-            String userInput = scanner.nextLine();
+            System.out.println("Entrez votre classe ("+ Character.allCharacters.keySet().toString() +") ou quitter le jeu (quitter)");
+            String userInput = userInput();
             if (userInput.equals("quitter")){
                 this.quitGame();
             }
-            // Introspection Reflection
-            try{
-                Class<?> characterType = Class.forName("character."+userInput);
-                try{
-                   character = (Character) characterType.getDeclaredConstructor().newInstance();
-                } catch (InstantiationException e) {
-                    System.out.println("Il y a eu un problème dans l'instaciation");
-                } catch (IllegalAccessException e) {
-                    System.out.println("Il y a un problème quelque part de type accès");
-                } catch (NoSuchMethodException e) {
-                    System.out.println("Il n'y a pas cette méthode");
-                } catch (InvocationTargetException e) {
-                    System.out.println("La cible n'a pas pu être invoquée");
-                }
-
-            }catch (ClassNotFoundException e) {
+            // Introspection/Reflection
+            String classType = Character.allCharacters.get(userInput);
+            try {
+                Class<?> characterType = Class.forName(classType);
+                character = (Character) characterType.getDeclaredConstructor().newInstance();
+            } catch (Exception e) {
                 System.out.println("Personnage sélectionné non valide");
             }
         }
@@ -111,10 +107,8 @@ public class Game {
      * start the game
      */
     public void start() {
-        this.createCharacter();
-        Board board = this.createBoard();
         try {
-            this.playGame(board);
+            this.playGame();
         } catch (OutOfBoardCharacterException e) {
             System.out.println(e.getMessage());
             this.askToRestart();
@@ -123,17 +117,16 @@ public class Game {
 
     /**
      * Play the game while user not at the end of the board
-     * @param board Board
      */
-    private void playGame(Board board) throws OutOfBoardCharacterException {
+    private void playGame() throws OutOfBoardCharacterException {
         int positionPlayer = 0;
-        while(positionPlayer< board.getBoardLength()) {
-            Dice dice = new Dice();
+        Dice dice = new Dice();
+        while(positionPlayer< this.board.getBoardLength()) {
             positionPlayer += dice.throwDice();
-            System.out.println(positionPlayer + "/" + board.getBoardLength());
+            System.out.println(positionPlayer + "/" + this.board.getBoardLength());
         }
-        if (positionPlayer >= board.getBoardLength()) {
-            throw new OutOfBoardCharacterException("Vous avez finit la partie");
+        if (positionPlayer >= this.board.getBoardLength()) {
+            throw new OutOfBoardCharacterException("Vous avez fini la partie");
         }
         if (positionPlayer < 0) {
             throw new OutOfBoardCharacterException("Vous êtes parti un peu loin");
@@ -144,9 +137,8 @@ public class Game {
      * Ask the user if he/she wants to replay if yes restart the game else quit the game
      */
     private void askToRestart() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Voulez-vous recommencer (recommencer) ou quitter (quitter) ?");
-        String userInput = scanner.nextLine().toLowerCase();
+        String userInput = userInput().toLowerCase();
         if ("recommencer".equalsIgnoreCase(userInput)) {
             this.start();
         } else if ("quitter".equalsIgnoreCase((userInput))) {
@@ -160,5 +152,13 @@ public class Game {
      */
     private Board createBoard() {
         return new Board();
+    }
+
+    /**
+     * Get the input of the player
+     */
+    private String userInput() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine();
     }
 }
