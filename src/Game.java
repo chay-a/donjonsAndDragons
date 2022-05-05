@@ -3,6 +3,7 @@ import board.Cell;
 import character.Character;
 import character.Warrior;
 import character.Wizard;
+import exceptions.OutOfBoardCharacterException;
 
 import java.util.Scanner;
 
@@ -37,7 +38,7 @@ public class Game {
      * @param isInfoValid boolean
      * @return boolean
      */
-    private Boolean isInformationValid(Scanner scanner, Boolean isInfoValid) {
+    private Boolean isInformationValid(Scanner scanner, boolean isInfoValid) {
         System.out.println("Voulez-vous valider ce personnage ? (Oui/Non) ou quitter le jeu (quitter)");
         String userInput = scanner.nextLine();
         if ("quitter".equalsIgnoreCase(userInput)) {
@@ -104,20 +105,30 @@ public class Game {
     public void start() {
         this.createCharacter();
         Board board = this.createBoard();
-        this.playGame(board);
-        this.askToRestart();
+        try {
+            this.playGame(board);
+        } catch (OutOfBoardCharacterException e) {
+            System.out.println(e.getMessage());
+            this.askToRestart();
+        }
     }
 
     /**
      * Play the game while user not at the end of the board
      * @param board Board
      */
-    private void playGame(Board board) {
+    private void playGame(Board board) throws OutOfBoardCharacterException {
         int positionPlayer = 0;
         while(positionPlayer< board.getBoardLength()) {
             Dice dice = new Dice();
             positionPlayer += dice.throwDice();
             System.out.println(positionPlayer + "/" + board.getBoardLength());
+        }
+        if (positionPlayer >= board.getBoardLength()) {
+            throw new OutOfBoardCharacterException("Vous avez finit la partie");
+        }
+        if (positionPlayer < 0) {
+            throw new OutOfBoardCharacterException("Vous êtes parti un peu loin");
         }
     }
 
