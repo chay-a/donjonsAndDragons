@@ -1,28 +1,17 @@
 package character;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public abstract class Character {
-    private String name;
-    private int life;
-    private int strength;
-    private int maxLife;
-    private int maxStrength;
-    public static Map<String, String> allCharacters = new HashMap<String, String>() {{
-        put("Guerrier", "character.Warrior");
-        put("Magicien", "character.Wizard");
-    }};
+    protected String name;
+    protected int life;
+    protected int strength;
 
     /**
      * Hydrate the object with every value sent in parameters and name set to null
      * @param life null life of the object
      * @param strength strength of the object
-     * @param maxLife max Life of the object
-     * @param maxStrength max Strength of the object
      */
-    public Character(int life, int strength, int maxLife, int maxStrength) {
-        this(null, life, strength, maxLife, maxStrength);
+    public Character(int life, int strength) {
+        this(null, life, strength);
     }
 
     /**
@@ -30,15 +19,11 @@ public abstract class Character {
      * @param name name of the object
      * @param life life of the object
      * @param strength strength of the object
-     * @param maxLife max Life of the object
-     * @param maxStrength max strength of the object
      */
-    public Character(String name, int life, int strength, int maxLife, int maxStrength) {
+    public Character(String name, int life, int strength) {
         this.name = name;
         this.life = life;
         this.strength = strength;
-        this.maxLife = maxLife;
-        this.maxStrength = maxStrength;
     }
 
 
@@ -67,16 +52,9 @@ public abstract class Character {
     }
 
     /**
-     * Set the strength of the object without being higher than the max strength
-     * @param strength the new strength to add
+     * Set the strength of the object
      */
-    public void setStrength(int strength) {
-        int newStrength = this.strength + strength;
-        if (newStrength >= this.maxStrength) {
-            newStrength = this.maxStrength;
-        }
-        this.strength = newStrength;
-    }
+    public abstract void setStrength();
 
     /**
      * Get the life of the object
@@ -94,41 +72,4 @@ public abstract class Character {
         this.life = life;
     }
 
-    /**
-     * Get the maximum life of the object
-     * @return int life maximum of the object
-     */
-    public int getMaxLife() {
-        return maxLife;
-    }
-
-    /**
-     * Get the maximum strength of the object
-     * @return int strength maximum of the object
-     */
-    public int getMaxStrength() {
-        return maxStrength;
-    }
-
-    /**
-     * Get the French name of the character type
-     * @param className String
-     * @return String
-     */
-    private static String getInternalNameFromClassName(String className) {
-        for (String frName : allCharacters.keySet()) {
-            String cName = (String) allCharacters.get(frName);
-            if (className.equals(cName)) {
-                return frName;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public String toString() {
-        return "Votre personnage est : " + Character.getInternalNameFromClassName(this.getClass().getName()) + "\n" + "Le nom de votre personnage : " + this.name + "\n" +
-                "La vie de votre personnage : " + this.life + ", max : " + this.maxLife + "\n" +
-                "La force de votre personnage : " + this.strength + ", max : " + this.maxStrength;
-    }
 }

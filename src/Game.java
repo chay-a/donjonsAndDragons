@@ -1,12 +1,14 @@
 import board.Board;
-import character.Character;
+
+import character.Hero;
+import equipment.Equipment;
 import exceptions.OutOfBoardCharacterException;
 
 import java.util.Scanner;
 
 public class Game {
 
-    private Character character;
+    private Hero character;
     private Board board;
 
     public static void main(String[] args) {
@@ -27,8 +29,8 @@ public class Game {
      * Create a character from the user selection
      * @return Character
      */
-    private Character createCharacter() {
-        Character character= null;
+    private Hero createCharacter() {
+        Hero character= null;
         boolean isInfoValid = false;
         while(!isInfoValid) {
             // Choose character type
@@ -83,19 +85,19 @@ public class Game {
     /**
      * Select character type
      */
-    private Character selectCharacterType() {
-        Character character = null;
+    private Hero selectCharacterType() {
+        Hero character = null;
         while (character == null) {
-            System.out.println("Entrez votre classe ("+ Character.allCharacters.keySet().toString() +") ou quitter le jeu (quitter)");
+            System.out.println("Entrez votre classe ("+ Hero.getAllCharacters().keySet().toString() +") ou quitter le jeu (quitter)");
             String userInput = userInput();
             if (userInput.equals("quitter")){
                 this.quitGame();
             }
             // Introspection/Reflection
-            String classType = Character.allCharacters.get(userInput);
+            String classType = Hero.getAllCharacters().get(userInput);
             try {
                 Class<?> characterType = Class.forName(classType);
-                character = (Character) characterType.getDeclaredConstructor().newInstance();
+                character = (Hero) characterType.getDeclaredConstructor().newInstance();
             } catch (Exception e) {
                 System.out.println("Personnage sélectionné non valide");
             }
