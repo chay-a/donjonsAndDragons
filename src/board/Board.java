@@ -1,4 +1,6 @@
 package board;
+import event.IEvent;
+
 import java.util.Arrays;
 
 public class Board {
@@ -8,10 +10,8 @@ public class Board {
      * Create the board for each index instantiate a Cell with on index 0 the player
      */
     public Board() {
-        this.board[0] = new Cell();
-        this.board[0].setValue("joueur");
         // Loop to instantiate cells and create board
-        for (int i = 1; i< board.length; i++) {
+        for (int i = 0; i< board.length; i++) {
             this.board[i] = new Cell();
         }
     }
@@ -20,6 +20,15 @@ public class Board {
     public static void main(String[] args) {
         Board board = new Board();
         System.out.println(board);
+    }
+
+    public String getEventByIndex(int index) {
+        if (this.board[index].getValue() == null) {
+            return "Case vide";
+        } else {
+            IEvent event = (IEvent)this.board[index].getValue();
+            return event.trigger();
+        }
     }
 
     /**
@@ -32,5 +41,9 @@ public class Board {
     @Override
     public String toString() {
         return "plateau = " + Arrays.toString(board);
+    }
+
+    public Cell[] getBoard() {
+        return board;
     }
 }

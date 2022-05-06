@@ -1,6 +1,8 @@
 package equipment;
 
-public class Potion {
+import event.IEvent;
+
+public abstract class Potion implements IEvent {
     private int life;
 
     public Potion(int life) {
@@ -13,5 +15,10 @@ public class Potion {
      */
     public int getLife() {
         return life;
+    }
+
+    @Override
+    public String trigger() {
+        return "Vous avez trouvé : " + this.getClass().getSimpleName();
     }
 }

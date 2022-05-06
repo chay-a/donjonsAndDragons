@@ -1,7 +1,10 @@
 import board.Board;
 
+import character.Enemy;
 import character.Hero;
+import character.enemy.Goblin;
 import equipment.Equipment;
+import event.IEvent;
 import exceptions.OutOfBoardCharacterException;
 
 import java.util.Scanner;
@@ -123,9 +126,25 @@ public class Game {
     private void playGame() throws OutOfBoardCharacterException {
         int positionPlayer = 0;
         Dice dice = new Dice();
-        while(positionPlayer< this.board.getBoardLength()) {
-            positionPlayer += dice.throwDice();
-            System.out.println(positionPlayer + "/" + this.board.getBoardLength());
+        while(positionPlayer < this.board.getBoardLength()) {
+            System.out.println("Lancer le dé (dé), voir les stats (stats), quitter (quitter)");
+            String userInput = this.userInput();
+            switch(userInput) {
+                case "dé" :
+                    positionPlayer += dice.throwDice();
+                    System.out.println((positionPlayer+1) + "/" + this.board.getBoardLength());
+                    Object event = board.getBoard()[positionPlayer].getValue();
+                    System.out.println(board.getEventByIndex(positionPlayer));
+                    break;
+                case "stats":
+                    System.out.println(character);
+                    break;
+                case "quitter":
+                    this.quitGame();
+                    break;
+                default:
+                    break;
+            }
         }
         if (positionPlayer >= this.board.getBoardLength()) {
             throw new OutOfBoardCharacterException("Vous avez fini la partie");

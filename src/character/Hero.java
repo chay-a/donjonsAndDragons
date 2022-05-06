@@ -74,10 +74,9 @@ public abstract class Hero extends Character{
 
     @Override
     public String toString() {
-        return "Votre personnage est : " + Hero.getInternalNameFromClassName(this.getClass().getName()) + "\n" + "Le nom de votre personnage : " + this.name + "\n" +
-                "La vie de votre personnage : " + this.life + ", max : " + this.maxLife + "\n" +
-                "La force de votre personnage : " + this.strength + ", max : " + this.maxStrength + "\n" +
-                "Votre arme est : " + this.equipment.toString();
+        return "Votre personnage est : " + Hero.getInternalNameFromClassName(this.getClass().getName()) + "\n" + "Le nom de votre personnage : " + super.getName() + "\n" +
+                "La vie de votre personnage : " + super.getLife() + ", max : " + this.maxLife + "\n" +
+                "La force de votre personnage : " + super.getStrength() + ", max : " + this.maxStrength + "\n";
     }
 
     /**

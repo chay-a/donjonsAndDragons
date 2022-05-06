@@ -1,6 +1,8 @@
 package equipment;
 
-public class Equipment {
+import event.IEvent;
+
+public abstract class Equipment implements IEvent {
     private int strength;
 
     public Equipment(int strength) {
@@ -15,4 +17,8 @@ public class Equipment {
         return strength;
     }
 
+    @Override
+    public String trigger() {
+        return "Vous avez trouvé : " + this.getClass().getSimpleName();
+    }
 }
