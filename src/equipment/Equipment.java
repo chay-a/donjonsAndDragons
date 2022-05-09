@@ -21,4 +21,9 @@ public abstract class Equipment implements IEvent {
     public String trigger() {
         return "Vous avez trouvé : " + this.getClass().getSimpleName();
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
 }
