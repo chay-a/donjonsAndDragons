@@ -26,11 +26,37 @@ public abstract class Hero extends Character{
     }
 
     /**
+     * Return the result of the fight
+     * @return String
+     */
+    public String fight(Enemy enemy) {
+        int enemyLife = enemy.getLife();
+        int attack;
+        if (this.equipment != null) {
+            int strengthAttack = this.getStrength() + this.equipment.getStrength();
+            attack = Math.min(strengthAttack, this.maxStrength);
+        } else {
+            attack = this.getStrength();
+        }
+        enemy.setLife(enemyLife - attack);
+        return "Vous avez enlevé " + attack + " points de vie à l'ennemi \nL'ennemi a " + enemy.getLife() + " points de vie";
+    }
+
+    /**
      * Set the strength of the character with the strength of the equipment
      */
     @Override
     public void setStrength() {
-        this.strength += this.equipment.getStrength();
+        int newStrength = this.strength + this.equipment.getStrength();
+        this.strength = Math.min(newStrength, this.maxStrength);
+    }
+
+    /**
+     * Add new life of the character
+     */
+    public void addLife(int life) {
+        int newLife = super.life + life;
+        super.setLife(Math.min(newLife, this.maxLife));
     }
 
     /**
@@ -74,9 +100,16 @@ public abstract class Hero extends Character{
 
     @Override
     public String toString() {
+        String equipmentString;
+        if (this.equipment == null) {
+            equipmentString = "aucun";
+        } else {
+            equipmentString = this.equipment.getClass().getSimpleName();
+        }
         return "Votre personnage est : " + Hero.getInternalNameFromClassName(this.getClass().getName()) + "\n" + "Le nom de votre personnage : " + super.getName() + "\n" +
                 "La vie de votre personnage : " + super.getLife() + ", max : " + this.maxLife + "\n" +
-                "La force de votre personnage : " + super.getStrength() + ", max : " + this.maxStrength + "\n";
+                "La force de votre personnage : " + super.getStrength() + ", max : " + this.maxStrength + "\n" +
+                "Votre équipement : " + equipmentString;
     }
 
     /**
@@ -84,10 +117,10 @@ public abstract class Hero extends Character{
      * @param equipment Equipment
      */
     public void setEquipment(Equipment equipment) {
-        this.strength -= this.equipment.getStrength();
         this.equipment = equipment;
-        this.setStrength();
     }
+
+    public abstract String takeEquipment(Equipment equipment);
 
     /**
      * Set the equipment of the character

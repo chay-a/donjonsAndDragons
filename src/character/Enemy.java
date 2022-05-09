@@ -22,7 +22,7 @@ public abstract class Enemy extends Character implements IEvent {
     public String action(Hero hero) {
         int heroLife = hero.getLife();
         hero.setLife(heroLife - this.getStrength());
-        return "Il vous a enlevé " + this.getStrength() + " points de vie \n Il vous en reste " + hero.getLife();
+        return "L'ennemi vous a enlevé " + this.getStrength() + " points de vie \nIl vous en reste " + hero.getLife();
 
     }
 }
