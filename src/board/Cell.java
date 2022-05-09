@@ -20,26 +20,24 @@ public class Cell {
     public Cell () {
         double randomBefore =  (Math.random()) * 100;
         int random = (int) randomBefore;
-       if (random < 30) {
-           if (random <10) {
+       if (random < 45) {
+           if (random <15) {
                this.value = new Goblin();
-           } else if (random <20) {
+           } else if (random <30) {
                this.value = new Dragon();
            } else {
                this.value = new Witch();
            }
-       } else if (random < 60) {
+       } else if (random < 90) {
            if (random < 50) {
                this.value = new LargePotion();
-           } else {
+           } else if (random < 55){
                this.value = new SmallPotion();
-           }
-       } else if (random < 80) {
-           if (random < 65) {
+           } else if (random < 60) {
                this.value = new Club();
            } else if (random < 70) {
                this.value = new Sword();
-           } else if (random < 75) {
+           } else if (random < 80) {
                this.value= new Lightning();
            } else {
                this.value = new Fireball();
