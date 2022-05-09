@@ -4,6 +4,7 @@ import character.Enemy;
 import character.Hero;
 import character.enemy.Goblin;
 import equipment.Equipment;
+import equipment.Potion;
 import event.IEvent;
 import exceptions.OutOfBoardCharacterException;
 
@@ -126,15 +127,23 @@ public class Game {
     private void playGame() throws OutOfBoardCharacterException {
         int positionPlayer = 0;
         Dice dice = new Dice();
-        while(positionPlayer < this.board.getBoardLength()) {
+        roundsPlaying(positionPlayer, dice);
+    }
+
+    private void roundsPlaying(int positionPlayer, Dice dice) throws OutOfBoardCharacterException {
+        boolean isGamePlaying = true;
+        while(isGamePlaying) {
             System.out.println("Lancer le dé (dé), voir les stats (stats), quitter (quitter)");
             String userInput = this.userInput();
             switch(userInput) {
                 case "dé" :
                     positionPlayer += dice.throwDice();
-                    System.out.println((positionPlayer+1) + "/" + this.board.getBoardLength());
-                    Object event = board.getBoard()[positionPlayer].getValue();
-                    System.out.println(board.getEventByIndex(positionPlayer));
+                    System.out.println((positionPlayer +1) + "/" + this.board.getBoardLength());
+                    if (positionPlayer >= this.board.getBoardLength()) {
+                        isGamePlaying = false;
+                        throw new OutOfBoardCharacterException("Vous avez fini la partie");
+                    }
+                    playEvent(positionPlayer);
                     break;
                 case "stats":
                     System.out.println(character);
@@ -146,11 +155,68 @@ public class Game {
                     break;
             }
         }
-        if (positionPlayer >= this.board.getBoardLength()) {
-            throw new OutOfBoardCharacterException("Vous avez fini la partie");
+    }
+
+    private void playEvent(int positionPlayer) {
+        IEvent event = (IEvent) board.getBoard()[positionPlayer].getValue();
+        if (event == null) {
+            System.out.println("Cette case est vide...");
+        } else {
+            System.out.println(event.trigger());
+            if (event instanceof Enemy) {
+                EnemyEvent((Enemy) event);
+            } else if (event instanceof Equipment) {
+                EquipmentEvent((Equipment) event);
+            } else if (event instanceof Potion) {
+                PotionEvent((Potion) event);
+            }
         }
-        if (positionPlayer < 0) {
-            throw new OutOfBoardCharacterException("Vous êtes parti un peu loin");
+    }
+
+    private void PotionEvent(Potion event) {
+        character.addLife(event.getLife());
+        System.out.println("Vous avez maintenant " + character.getLife() + " points de vie");
+    }
+
+    private void EquipmentEvent(Equipment event) {
+        String userInput;
+        boolean isEquipmentEventResolve = false;
+        while (!isEquipmentEventResolve) {
+            System.out.println("Voulez-vous prendre cet équipement ? (Oui/non) ou quitter (quitter)");
+            userInput = this.userInput().toLowerCase();
+            switch (userInput) {
+                case "oui":
+                    System.out.println(character.takeEquipment(event));
+                    isEquipmentEventResolve = true;
+                    break;
+                case "non":
+                    System.out.println("Vous n'avez pas pris l'équipement");
+                    isEquipmentEventResolve = true;
+                    break;
+                case "quitter":
+                    this.quitGame();
+                    break;
+                default:
+                    System.out.println("Votre demande n'a pas été comprise");
+            }
+        }
+    }
+
+    private void EnemyEvent(Enemy event) {
+        boolean isFight = true;
+        while (isFight) {
+            System.out.println(character.fight(event));
+            if (event.getLife() <= 0) {
+                System.out.println("Vous avez tué l'ennemi");
+                isFight = false;
+            } else {
+                System.out.println(event.action(character));
+                if (character.getLife() <= 0) {
+                    isFight = false;
+                    System.out.println("Vous êtes mort");
+                    this.askToRestart();
+                }
+            }
         }
     }
 
@@ -158,12 +224,15 @@ public class Game {
      * Ask the user if he/she wants to replay if yes restart the game else quit the game
      */
     private void askToRestart() {
-        System.out.println("Voulez-vous recommencer (recommencer) ou quitter (quitter) ?");
+        System.out.println("Voulez-vous recommencer avec ce personnage (recommencer) ou recréer un personnage (personnage) ou quitter (quitter) ?");
         String userInput = userInput().toLowerCase();
         if ("recommencer".equalsIgnoreCase(userInput)) {
             this.start();
         } else if ("quitter".equalsIgnoreCase((userInput))) {
             this.quitGame();
+        } else if ("personnage".equalsIgnoreCase(userInput)) {
+            Game game = new Game();
+            game.start();
         }
     }
 
