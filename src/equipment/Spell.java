@@ -3,7 +3,7 @@ package equipment;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Spell extends Equipment{
+public abstract class Spell extends Equipment{
 
     private static Map<String, String> translation = new HashMap<>() {{
         put("Boule de feu", "equipment.spell.Fireball");

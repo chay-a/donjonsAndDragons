@@ -3,7 +3,7 @@ package equipment;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Weapon extends Equipment{
+public abstract class Weapon extends Equipment{
     private static Map<String, String> translation = new HashMap<>() {{
         put("Massue", "equipment.weapon.Club");
         put("Epée", "equipment.weapon.Sword");
