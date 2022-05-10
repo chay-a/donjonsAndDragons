@@ -30,4 +30,13 @@ public class Warrior extends Hero {
             return "Vous ne pouvez pas prendre cet équipement";
         }
     }
+
+    @Override
+    public void reset() {
+        this.life = 5;
+        this.strength = 5;
+        this.setMaxLife(10);
+        this.setMaxStrength(10);
+        this.setEquipment(null);
+    }
 }

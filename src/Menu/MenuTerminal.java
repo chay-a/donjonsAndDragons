@@ -99,7 +99,7 @@ public class MenuTerminal implements Menu{
 
     @Override
     public String requestRestart() {
-        return this.getMessage("Voulez-vous recommencer avec ce personnage (recommencer) ou recréer un personnage (personnage) ou quitter (quitter) ?");
+        return this.getMessage("Voulez-vous recommencer avec ce(s) personnage(s) (recommencer) ou recréer un/des personnage(s) (personnage) ou quitter (quitter) ?");
     }
 
     @Override
