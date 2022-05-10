@@ -1,18 +1,18 @@
+import List.CharacterInGame;
 import board.Board;
 
 import character.Enemy;
 import character.Hero;
-import character.enemy.Goblin;
 import equipment.Equipment;
 import equipment.Potion;
 import event.IEvent;
 import exceptions.OutOfBoardCharacterException;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Game {
 
-    private Hero character;
+    private List<CharacterInGame> characters = new ArrayList<>();
     private Board board;
 
     public static void main(String[] args) {
@@ -25,8 +25,22 @@ public class Game {
      * Hydrate character and board with the creation of a new character and a new board
      */
     public Game() {
-        this.character = this.createCharacter();
+        this.characters = this.createCharacters();
         this.board = this.createBoard();
+    }
+
+    /**
+     * Create the number of characters according to the user input
+     * @return Map<Hero, Integer>
+     */
+    public List<CharacterInGame> createCharacters() {
+        List<CharacterInGame> players = new ArrayList<CharacterInGame>();
+        System.out.println("Nombre de joueurs : ");
+        int nbPlayers = Integer.parseInt(userInput());
+        for (int i = 1; i < nbPlayers +1; i++) {
+            players.add(new CharacterInGame(this.createCharacter()));
+        }
+        return players;
     }
 
     /**
@@ -117,6 +131,10 @@ public class Game {
             this.playGame();
         } catch (OutOfBoardCharacterException e) {
             System.out.println(e.getMessage());
+            Collections.sort(this.characters);
+            for (CharacterInGame character : this.characters) {
+                System.out.println(character.getCharacter().getName() + " est en position : " + this.characters.indexOf(character) +1);
+            }
             this.askToRestart();
         }
     }
@@ -125,60 +143,91 @@ public class Game {
      * Play the game while user not at the end of the board
      */
     private void playGame() throws OutOfBoardCharacterException {
-        int positionPlayer = 0;
         Dice dice = new Dice();
-        roundsPlaying(positionPlayer, dice);
-    }
-
-    private void roundsPlaying(int positionPlayer, Dice dice) throws OutOfBoardCharacterException {
         boolean isGamePlaying = true;
         while(isGamePlaying) {
-            System.out.println("Lancer le dé (dé), voir les stats (stats), quitter (quitter)");
-            String userInput = this.userInput();
-            switch(userInput) {
-                case "dé" :
-                    positionPlayer += dice.throwDice();
-                    System.out.println((positionPlayer +1) + "/" + this.board.getBoardLength());
-                    if (positionPlayer >= this.board.getBoardLength()) {
-                        isGamePlaying = false;
-                        throw new OutOfBoardCharacterException("Vous avez fini la partie");
-                    }
-                    playEvent(positionPlayer);
-                    break;
-                case "stats":
-                    System.out.println(character);
-                    break;
-                case "quitter":
-                    this.quitGame();
-                    break;
-                default:
-                    break;
-            }
+            isGamePlaying = round(dice, isGamePlaying);
         }
     }
 
-    private void playEvent(int positionPlayer) {
-        IEvent event = (IEvent) board.getBoard()[positionPlayer].getValue();
+    /**
+     * Play one round of the game
+     * @param dice Dice
+     * @param isGamePlaying boolean
+     * @return boolean
+     * @throws OutOfBoardCharacterException Exception
+     */
+    private boolean round(Dice dice, boolean isGamePlaying) throws OutOfBoardCharacterException {
+        for (CharacterInGame character : this.characters) {
+            if (!character.isDead()) {
+                boolean isThrowDice = false;
+                while (!isThrowDice) {
+                    System.out.println("\n" + character.getCharacter().getName() + " est en train de jouer ----------------------------------------");
+                    System.out.println("Lancer le dé (dé), voir les stats (stats), quitter (quitter)");
+                    String userInput = this.userInput();
+                    switch (userInput) {
+                        case "dé":
+                            isThrowDice = true;
+                            break;
+                        case "stats":
+                            System.out.println(character);
+                            break;
+                        case "quitter":
+                            this.quitGame();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                character.setPosition(character.getPosition() + dice.throwDice());
+                System.out.println((character.getPosition() + 1) + "/" + this.board.getBoardLength());
+                if (character.getPosition() >= this.board.getBoardLength()) {
+                    isGamePlaying = false;
+                    throw new OutOfBoardCharacterException("Vous avez fini la partie");
+                }
+                playEvent(character);
+            }
+        }
+        return isGamePlaying;
+    }
+
+    /**
+     * Action according to Event
+     * @param characterInGame CharacterInGame
+     */
+    private void playEvent(CharacterInGame characterInGame) {
+        Hero character = characterInGame.getCharacter();
+        IEvent event = (IEvent) board.getBoard()[characterInGame.getPosition()].getValue();
         if (event == null) {
             System.out.println("Cette case est vide...");
         } else {
             System.out.println(event.trigger());
             if (event instanceof Enemy) {
-                EnemyEvent((Enemy) event);
+                EnemyEvent((Enemy) event, characterInGame);
             } else if (event instanceof Equipment) {
-                EquipmentEvent((Equipment) event);
+                EquipmentEvent((Equipment) event, character);
             } else if (event instanceof Potion) {
-                PotionEvent((Potion) event);
+                PotionEvent((Potion) event, character);
             }
         }
     }
 
-    private void PotionEvent(Potion event) {
+    /**
+     * Potion Event
+     * @param event Potion
+     * @param character Hero
+     */
+    private void PotionEvent(Potion event, Hero character) {
         character.addLife(event.getLife());
         System.out.println("Vous avez maintenant " + character.getLife() + " points de vie");
     }
 
-    private void EquipmentEvent(Equipment event) {
+    /**
+     * Equipment Event
+     * @param event Equipment
+     * @param character Hero
+     */
+    private void EquipmentEvent(Equipment event, Hero character) {
         String userInput;
         boolean isEquipmentEventResolve = false;
         while (!isEquipmentEventResolve) {
@@ -202,7 +251,13 @@ public class Game {
         }
     }
 
-    private void EnemyEvent(Enemy event) {
+    /**
+     * Enemy Event
+     * @param event Enemy
+     * @param characterInGame CharacterInGame
+     */
+    private void EnemyEvent(Enemy event, CharacterInGame characterInGame) {
+        Hero character = characterInGame.getCharacter();
         boolean isFight = true;
         while (isFight) {
             System.out.println(character.fight(event));
@@ -214,7 +269,16 @@ public class Game {
                 if (character.getLife() <= 0) {
                     isFight = false;
                     System.out.println("Vous êtes mort");
-                    this.askToRestart();
+                    characterInGame.setDead(true);
+                    int nbCharactersDead = 0;
+                    for (CharacterInGame character1 : this.characters) {
+                        if (character1.isDead()) {
+                            nbCharactersDead++;
+                        }
+                    }
+                    if (nbCharactersDead == this.characters.size()) {
+                        this.askToRestart();
+                    }
                 }
             }
         }
