@@ -1,4 +1,6 @@
 import List.CharacterInGame;
+import Menu.Menu;
+import Menu.MenuTerminal;
 import board.Board;
 
 import character.Enemy;
@@ -14,6 +16,7 @@ public class Game {
 
     private List<CharacterInGame> characters = new ArrayList<>();
     private Board board;
+    private Menu menu;
 
     public static void main(String[] args) {
      //   System.out.println(System.getProperty("user.language")+"-"+System.getProperty("user.country"));
@@ -25,6 +28,7 @@ public class Game {
      * Hydrate character and board with the creation of a new character and a new board
      */
     public Game() {
+        this.menu = new MenuTerminal();
         this.characters = this.createCharacters();
         this.board = this.createBoard();
     }
@@ -35,8 +39,7 @@ public class Game {
      */
     public List<CharacterInGame> createCharacters() {
         List<CharacterInGame> players = new ArrayList<CharacterInGame>();
-        System.out.println("Nombre de joueurs : ");
-        int nbPlayers = Integer.parseInt(userInput());
+        int nbPlayers = Integer.parseInt(this.menu.requestPlayersNb());
         for (int i = 1; i < nbPlayers +1; i++) {
             players.add(new CharacterInGame(this.createCharacter()));
         }
@@ -55,7 +58,7 @@ public class Game {
             character = this.selectCharacterType();
             // Choose character name
             character.setName(this.chooseCharacterName());
-            System.out.println(character);
+            this.menu.displayCharacterStats(character);
             // is information valid ?
             isInfoValid = isInformationValid(isInfoValid);
         }
@@ -68,8 +71,7 @@ public class Game {
      * @return boolean
      */
     private Boolean isInformationValid(boolean isInfoValid) {
-        System.out.println("Voulez-vous valider ce personnage ? (Oui/Non) ou quitter le jeu (quitter)");
-        String userInput = userInput();
+        String userInput = this.menu.validateCharacter();
         if ("quitter".equalsIgnoreCase(userInput)) {
             this.quitGame();
         } else if ("oui".equalsIgnoreCase(userInput)) {
@@ -84,8 +86,7 @@ public class Game {
      * @return String
      */
     private String chooseCharacterName() {
-        System.out.println("Entrez le nom de votre personnage ou quitter le jeu (quitter)");
-        String userInput = userInput();
+        String userInput = this.menu.requestCharacterName();
         if ("quitter".equalsIgnoreCase(userInput)) {
             this.quitGame();
         }
@@ -96,7 +97,7 @@ public class Game {
      * Exit the program with a message
      */
     private void quitGame() {
-        System.out.println("Vous avez quitté le jeu");
+        this.menu.quitGame();
         System.exit(0);
     }
 
@@ -106,8 +107,7 @@ public class Game {
     private Hero selectCharacterType() {
         Hero character = null;
         while (character == null) {
-            System.out.println("Entrez votre classe ("+ Hero.getAllCharacters().keySet().toString() +") ou quitter le jeu (quitter)");
-            String userInput = userInput();
+            String userInput = this.menu.displayCharacterTypeSelection(Hero.getAllCharacters().keySet().toString());
             if (userInput.equals("quitter")){
                 this.quitGame();
             }
@@ -117,7 +117,7 @@ public class Game {
                 Class<?> characterType = Class.forName(classType);
                 character = (Hero) characterType.getDeclaredConstructor().newInstance();
             } catch (Exception e) {
-                System.out.println("Personnage sélectionné non valide");
+                this.menu.displayWrongType();
             }
         }
 
@@ -130,10 +130,10 @@ public class Game {
         try {
             this.playGame();
         } catch (OutOfBoardCharacterException e) {
-            System.out.println(e.getMessage());
+            this.menu.displayException(e.getMessage());
             Collections.sort(this.characters);
             for (CharacterInGame character : this.characters) {
-                System.out.println(character.getCharacter().getName() + " est en position : " + this.characters.indexOf(character) +1);
+                this.menu.displayRank(character.getCharacter().getName(), this.characters.indexOf(character) +1);
             }
             this.askToRestart();
         }
@@ -162,15 +162,14 @@ public class Game {
             if (!character.isDead()) {
                 boolean isThrowDice = false;
                 while (!isThrowDice) {
-                    System.out.println("\n" + character.getCharacter().getName() + " est en train de jouer ----------------------------------------");
-                    System.out.println("Lancer le dé (dé), voir les stats (stats), quitter (quitter)");
-                    String userInput = this.userInput();
+                    this.menu.displayCharacterTurn(character.getCharacter().getName());
+                    String userInput = this.menu.requestActionOfATurn();
                     switch (userInput) {
                         case "dé":
                             isThrowDice = true;
                             break;
                         case "stats":
-                            System.out.println(character);
+                            this.menu.displayCharacterStats(character.getCharacter());
                             break;
                         case "quitter":
                             this.quitGame();
@@ -180,7 +179,7 @@ public class Game {
                     }
                 }
                 character.setPosition(character.getPosition() + dice.throwDice());
-                System.out.println((character.getPosition() + 1) + "/" + this.board.getBoardLength());
+                this.menu.displayCharacterPositionOnBoard(character.getPosition() + 1, this.board.getBoardLength());
                 if (character.getPosition() >= this.board.getBoardLength()) {
                     isGamePlaying = false;
                     throw new OutOfBoardCharacterException("Vous avez fini la partie");
@@ -199,9 +198,9 @@ public class Game {
         Hero character = characterInGame.getCharacter();
         IEvent event = (IEvent) board.getBoard()[characterInGame.getPosition()].getValue();
         if (event == null) {
-            System.out.println("Cette case est vide...");
+            this.menu.displayEvent("Cette case est vide...");
         } else {
-            System.out.println(event.trigger());
+            this.menu.displayEvent(event.trigger());
             if (event instanceof Enemy) {
                 EnemyEvent((Enemy) event, characterInGame);
             } else if (event instanceof Equipment) {
@@ -219,7 +218,7 @@ public class Game {
      */
     private void PotionEvent(Potion event, Hero character) {
         character.addLife(event.getLife());
-        System.out.println("Vous avez maintenant " + character.getLife() + " points de vie");
+        this.menu.displayLife(character.getLife());
     }
 
     /**
@@ -231,22 +230,21 @@ public class Game {
         String userInput;
         boolean isEquipmentEventResolve = false;
         while (!isEquipmentEventResolve) {
-            System.out.println("Voulez-vous prendre cet équipement ? (Oui/non) ou quitter (quitter)");
-            userInput = this.userInput().toLowerCase();
+            userInput = this.menu.requestTakeEquipment().toLowerCase();
             switch (userInput) {
                 case "oui":
-                    System.out.println(character.takeEquipment(event));
+                    this.menu.displayCharacterTakeEquipment(character.takeEquipment(event));
                     isEquipmentEventResolve = true;
                     break;
                 case "non":
-                    System.out.println("Vous n'avez pas pris l'équipement");
+                    this.menu.displayCharacterDidntTakeEquipment();
                     isEquipmentEventResolve = true;
                     break;
                 case "quitter":
                     this.quitGame();
                     break;
                 default:
-                    System.out.println("Votre demande n'a pas été comprise");
+                    this.menu.displayInvalidUserInput();
             }
         }
     }
@@ -260,15 +258,15 @@ public class Game {
         Hero character = characterInGame.getCharacter();
         boolean isFight = true;
         while (isFight) {
-            System.out.println(character.fight(event));
+            this.menu.displayCharacterFight(character.fight(event));
             if (event.getLife() <= 0) {
-                System.out.println("Vous avez tué l'ennemi");
+                this.menu.displayEnemyDead();
                 isFight = false;
             } else {
-                System.out.println(event.action(character));
+                this.menu.displayEnemyAction(event.action(character));
                 if (character.getLife() <= 0) {
                     isFight = false;
-                    System.out.println("Vous êtes mort");
+                    this.menu.displayCharacterDead();
                     characterInGame.setDead(true);
                     int nbCharactersDead = 0;
                     for (CharacterInGame character1 : this.characters) {
@@ -288,8 +286,7 @@ public class Game {
      * Ask the user if he/she wants to replay if yes restart the game else quit the game
      */
     private void askToRestart() {
-        System.out.println("Voulez-vous recommencer avec ce personnage (recommencer) ou recréer un personnage (personnage) ou quitter (quitter) ?");
-        String userInput = userInput().toLowerCase();
+        String userInput = this.menu.requestRestart().toLowerCase();
         if ("recommencer".equalsIgnoreCase(userInput)) {
             this.start();
         } else if ("quitter".equalsIgnoreCase((userInput))) {
