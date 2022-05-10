@@ -129,4 +129,14 @@ public abstract class Hero extends Character{
     public Equipment getEquipment() {
         return equipment;
     }
+
+    public abstract void reset();
+
+    public void setMaxLife(int maxLife) {
+        this.maxLife = maxLife;
+    }
+
+    public void setMaxStrength(int maxStrength) {
+        this.maxStrength = maxStrength;
+    }
 }

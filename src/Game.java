@@ -288,6 +288,11 @@ public class Game {
     private void askToRestart() {
         String userInput = this.menu.requestRestart().toLowerCase();
         if ("recommencer".equalsIgnoreCase(userInput)) {
+            for (CharacterInGame character : this.characters) {
+                character.getCharacter().reset();
+                character.setPosition(0);
+                character.setDead(false);
+            }
             this.start();
         } else if ("quitter".equalsIgnoreCase((userInput))) {
             this.quitGame();

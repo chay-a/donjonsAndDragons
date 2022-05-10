@@ -3,7 +3,6 @@ package character.hero;
 import character.Hero;
 import equipment.Equipment;
 import equipment.Spell;
-import equipment.Weapon;
 
 public class Wizard extends Hero {
     /**
@@ -26,4 +25,15 @@ public class Wizard extends Hero {
             return "Vous ne pouvez pas prendre cet équipement";
         }
     }
+
+    @Override
+    public void reset() {
+        this.life = 3;
+        this.strength = 8;
+        this.setMaxLife(6);
+        this.setMaxStrength(15);
+        this.setEquipment(null);
+    }
+
+
 }
