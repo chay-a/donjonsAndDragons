@@ -13,7 +13,7 @@ public interface Menu {
     void displayCharacterPositionOnBoard(int positionCharacter, int boardLength);
     void displayEvent(String eventMessage);
     void displayLife(int life);
-    String requestTakeEquipment();
+    String requestTakeEquipment(int strength);
     void displayCharacterTakeEquipment(String equipmentMessage);
     void displayCharacterDidntTakeEquipment();
     void displayInvalidUserInput();

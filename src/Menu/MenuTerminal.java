@@ -58,8 +58,8 @@ public class MenuTerminal implements Menu{
     }
 
     @Override
-    public String requestTakeEquipment() {
-        return this.getMessage("Voulez-vous prendre cet équipement ? (Oui/non) ou quitter (quitter)");
+    public String requestTakeEquipment(int strength) {
+        return this.getMessage("Voulez-vous prendre cet équipement pour une force de " + strength +" ? (Oui/non) ou quitter (quitter)");
     }
 
     @Override

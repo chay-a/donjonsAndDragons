@@ -243,7 +243,7 @@ public class Game {
         String userInput;
         boolean isEquipmentEventResolve = false;
         while (!isEquipmentEventResolve) {
-            userInput = this.menu.requestTakeEquipment().toLowerCase();
+            userInput = this.menu.requestTakeEquipment(event.getEffect()).toLowerCase();
             switch (userInput) {
                 case "oui":
                     this.menu.displayCharacterTakeEquipment(character.takeEquipment(event));
