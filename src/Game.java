@@ -273,28 +273,48 @@ public class Game {
         Hero character = characterInGame.getCharacter();
         boolean isFight = true;
         while (isFight) {
-            this.menu.displayCharacterFight(character.fight(event));
-            if (event.getLife() <= 0) {
-                this.menu.displayEnemyDead();
-                isFight = false;
-            } else {
-                this.menu.displayEnemyAction(event.action(character));
-                if (character.getLife() <= 0) {
-                    isFight = false;
-                    this.menu.displayCharacterDead();
-                    characterInGame.setDead(true);
-                    int nbCharactersDead = 0;
-                    for (CharacterInGame character1 : this.characters) {
-                        if (character1.isDead()) {
-                            nbCharactersDead++;
-                        }
-                    }
-                    if (nbCharactersDead == this.characters.size()) {
-                        this.askToRestart();
-                    }
+            boolean isRequestAction = false;
+            while (!isRequestAction) {
+                switch (this.menu.requestFightAction()) {
+                    case "attaque" :
+                        isRequestAction = true;
+                        isFight = isFight(event, characterInGame, character, isFight);
+                        break;
+                    case "fuir":
+                        isRequestAction = true;
+                        isFight = false;
+                        this.menu.displayFlee();
+                        characterInGame.setPosition(characterInGame.getPosition() - 2);
+                    default:
+                        break;
                 }
             }
         }
+    }
+
+    private boolean isFight(Enemy event, CharacterInGame characterInGame, Hero character, boolean isFight) {
+        this.menu.displayCharacterFight(character.fight(event));
+        if (event.getLife() <= 0) {
+            this.menu.displayEnemyDead();
+            isFight = false;
+        } else {
+            this.menu.displayEnemyAction(event.action(character));
+            if (character.getLife() <= 0) {
+                isFight = false;
+                this.menu.displayCharacterDead();
+                characterInGame.setDead(true);
+                int nbCharactersDead = 0;
+                for (CharacterInGame character1 : this.characters) {
+                    if (character1.isDead()) {
+                        nbCharactersDead++;
+                    }
+                }
+                if (nbCharactersDead == this.characters.size()) {
+                    this.askToRestart();
+                }
+            }
+        }
+        return isFight;
     }
 
     /**

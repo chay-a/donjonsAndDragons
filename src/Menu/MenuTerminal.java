@@ -68,6 +68,16 @@ public class MenuTerminal implements Menu{
     }
 
     @Override
+    public String requestFightAction() {
+        return this.getMessage("Que voulez-vous faire ? Attaquer (attaque), Fuir (fuir)");
+    }
+
+    @Override
+    public void displayFlee() {
+        this.displayMessage("Vous fuiyez en revenant sur vos pas");
+    }
+
+    @Override
     public void displayCharacterTakeEquipment(String equipmentMessage) {
         this.displayMessage(equipmentMessage);
     }
