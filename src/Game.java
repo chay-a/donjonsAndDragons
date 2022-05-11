@@ -17,6 +17,7 @@ public class Game {
     private List<CharacterInGame> characters = new ArrayList<>();
     private Board board;
     private Menu menu;
+    private Dice dice;
 
     public static void main(String[] args) {
      //   System.out.println(System.getProperty("user.language")+"-"+System.getProperty("user.country"));
@@ -29,6 +30,7 @@ public class Game {
      */
     public Game() {
         this.menu = new MenuTerminal();
+        this.dice = new Dice();
         this.characters = this.createCharacters();
         this.board = this.createBoard();
     }
@@ -123,6 +125,7 @@ public class Game {
 
         return character;
     }
+
     /**
      * start the game
      */
@@ -143,49 +146,59 @@ public class Game {
      * Play the game while user not at the end of the board
      */
     private void playGame() throws OutOfBoardCharacterException {
-        Dice dice = new Dice();
         boolean isGamePlaying = true;
         while(isGamePlaying) {
-            isGamePlaying = round(dice, isGamePlaying);
+            isGamePlaying = round(isGamePlaying);
         }
     }
 
     /**
      * Play one round of the game
-     * @param dice Dice
      * @param isGamePlaying boolean
      * @return boolean
      * @throws OutOfBoardCharacterException Exception
      */
-    private boolean round(Dice dice, boolean isGamePlaying) throws OutOfBoardCharacterException {
+    private boolean round(boolean isGamePlaying) throws OutOfBoardCharacterException {
         for (CharacterInGame character : this.characters) {
-            if (!character.isDead()) {
-                boolean isThrowDice = false;
-                while (!isThrowDice) {
-                    this.menu.displayCharacterTurn(character.getCharacter().getName());
-                    String userInput = this.menu.requestActionOfATurn();
-                    switch (userInput) {
-                        case "dé":
-                            isThrowDice = true;
-                            break;
-                        case "stats":
-                            this.menu.displayCharacterStats(character.getCharacter());
-                            break;
-                        case "quitter":
-                            this.quitGame();
-                            break;
-                        default:
-                            break;
-                    }
+            isGamePlaying = playerRound(isGamePlaying, character);
+        }
+        return isGamePlaying;
+    }
+
+    /**
+     * Round of a player
+     * @param isGamePlaying boolean
+     * @param character CharacterInGame
+     * @return boolean
+     * @throws OutOfBoardCharacterException Exception
+     */
+    private boolean playerRound(boolean isGamePlaying, CharacterInGame character) throws OutOfBoardCharacterException {
+        if (!character.isDead()) {
+            boolean isThrowDice = false;
+            while (!isThrowDice) {
+                this.menu.displayCharacterTurn(character.getCharacter().getName());
+                String userInput = this.menu.requestActionOfATurn();
+                switch (userInput) {
+                    case "dé":
+                        isThrowDice = true;
+                        break;
+                    case "stats":
+                        this.menu.displayCharacterStats(character.getCharacter());
+                        break;
+                    case "quitter":
+                        this.quitGame();
+                        break;
+                    default:
+                        break;
                 }
-                character.setPosition(character.getPosition() + dice.throwDice());
-                this.menu.displayCharacterPositionOnBoard(character.getPosition() + 1, this.board.getBoardLength());
-                if (character.getPosition() >= this.board.getBoardLength()) {
-                    isGamePlaying = false;
-                    throw new OutOfBoardCharacterException("Vous avez fini la partie");
-                }
-                playEvent(character);
             }
+            character.setPosition(character.getPosition() + this.dice.throwDice());
+            this.menu.displayCharacterPositionOnBoard(character.getPosition() + 1, this.board.getBoardLength());
+            if (character.getPosition() >= this.board.getBoardLength()) {
+                isGamePlaying = false;
+                throw new OutOfBoardCharacterException("Vous avez fini la partie");
+            }
+            playEvent(character);
         }
         return isGamePlaying;
     }
