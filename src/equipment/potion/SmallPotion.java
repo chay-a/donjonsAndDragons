@@ -5,7 +5,7 @@ import equipment.Potion;
 
 public class SmallPotion extends Potion {
     public SmallPotion() {
-        super(2);
+        super(2, "Petite potion");
     }
 
     @Override

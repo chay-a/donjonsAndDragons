@@ -3,20 +3,20 @@ package equipment;
 import event.IEvent;
 
 public abstract class Equipment implements IEvent {
-    private int strength;
+    private int effect;
     private String name;
 
-    public Equipment(int strength, String name) {
+    public Equipment(int effect, String name) {
         this.name = name;
-        this.strength = strength;
+        this.effect = effect;
     }
 
     /**
-     * get the strength of the equipment
+     * get the effect of the equipment
      * @return int
      */
-    public int getStrength() {
-        return strength;
+    public int getEffect() {
+        return effect;
     }
 
     @Override
@@ -26,6 +26,6 @@ public abstract class Equipment implements IEvent {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName();
+        return this.name;
     }
 }

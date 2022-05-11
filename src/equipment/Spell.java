@@ -9,8 +9,8 @@ public abstract class Spell extends Equipment{
         put("Boule de feu", "equipment.spell.Fireball");
         put("Eclair", "equipment.spell.lightning");
     }};
-    public Spell(int strength, String name) {
-        super(strength, name);
+    public Spell(int effect, String name) {
+        super(effect, name);
     }
 
     /**
