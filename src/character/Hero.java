@@ -12,6 +12,7 @@ public abstract class Hero extends Character{
     private static Map<String, String> allCharacters = new HashMap<String, String>() {{
         put("Guerrier", "character.hero.Warrior");
         put("Magicien", "character.hero.Wizard");
+        put("Elfe", "character.hero.Elf");
     }};
 
     public Hero(int life, int strength, int maxLife, int maxStrength) {
