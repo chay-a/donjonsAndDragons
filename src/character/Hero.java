@@ -124,10 +124,16 @@ public abstract class Hero extends Character{
 
     public abstract void reset();
 
+    /**
+     * Set the MaxLife of the character
+     */
     public void setMaxLife(int maxLife) {
         this.maxLife = maxLife;
     }
 
+    /**
+     * Set the MaxStrength of the character
+     */
     public void setMaxStrength(int maxStrength) {
         this.maxStrength = maxStrength;
     }

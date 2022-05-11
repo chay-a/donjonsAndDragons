@@ -12,10 +12,19 @@ public class Wizard extends Hero {
         super(3, 8, 6, 15);
     }
 
+    /**
+     * Set the equipment to the Character
+     * @param spell Spell
+     */
     public void setEquipment(Spell spell) {
         super.setEquipment(spell);
     }
 
+    /**
+     * Take the equipment if it is a Distance
+     * @param equipment Equipment
+     * @return String
+     */
     @Override
     public String takeEquipment(Equipment equipment) {
         if (equipment instanceof Spell) {
@@ -26,6 +35,9 @@ public class Wizard extends Hero {
         }
     }
 
+    /**
+     * Reset the values to their default values
+     */
     @Override
     public void reset() {
         this.life = 3;

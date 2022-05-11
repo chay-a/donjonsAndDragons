@@ -22,15 +22,6 @@ public class Board {
         System.out.println(board);
     }
 
-    public String getEventByIndex(int index) {
-        if (this.board[index].getValue() == null) {
-            return "Case vide";
-        } else {
-            IEvent event = (IEvent)this.board[index].getValue();
-            return event.trigger();
-        }
-    }
-
     /**
      * Get the length of the board
      * @return int board length
@@ -43,6 +34,10 @@ public class Board {
         return "plateau = " + Arrays.toString(board);
     }
 
+    /**
+     * Get the board of the game
+     * @return Cell[]
+     */
     public Cell[] getBoard() {
         return board;
     }

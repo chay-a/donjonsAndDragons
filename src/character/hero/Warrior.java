@@ -12,6 +12,10 @@ public class Warrior extends Hero {
         super(5, 5, 10, 10);
     }
 
+    /**
+     * Set the equipment to the Character
+     * @param weapon Weapon
+     */
     public void setEquipment(Weapon weapon) {
         super.setEquipment(weapon);
     }
@@ -31,6 +35,9 @@ public class Warrior extends Hero {
         }
     }
 
+    /**
+     * Reset the values to their default values
+     */
     @Override
     public void reset() {
         this.life = 5;

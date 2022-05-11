@@ -292,6 +292,14 @@ public class Game {
         }
     }
 
+    /**
+     * Play a round of a fight
+     * @param event Enemy
+     * @param characterInGame characterInGame
+     * @param character character
+     * @param isFight boolean
+     * @return boolean
+     */
     private boolean isFight(Enemy event, CharacterInGame characterInGame, Hero character, boolean isFight) {
         this.menu.displayCharacterFight(character.fight(event));
         if (event.getLife() <= 0) {

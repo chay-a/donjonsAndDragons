@@ -5,10 +5,26 @@ import equipment.Distance;
 import equipment.Equipment;
 
 public class Elf extends Hero {
+    /**
+     * Constructor that hydrate value of the parent class Character
+     */
     public Elf() {
         super(5, 6, 13, 13);
     }
 
+    /**
+     * Set the equipment to the Character
+     * @param distance Distance
+     */
+    public void setEquipment(Distance distance) {
+        super.setEquipment(distance);
+    }
+
+    /**
+     * Take the equipment if it is a Distance
+     * @param equipment Equipment
+     * @return String
+     */
     @Override
     public String takeEquipment(Equipment equipment) {
         if (equipment instanceof Distance) {
@@ -19,6 +35,9 @@ public class Elf extends Hero {
         }
     }
 
+    /**
+     * Reset the values to their default values
+     */
     @Override
     public void reset() {
         this.life = 5;

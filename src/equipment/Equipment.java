@@ -19,6 +19,10 @@ public abstract class Equipment implements IEvent {
         return effect;
     }
 
+    /**
+     * Return message what type of event it is
+     * @return String
+     */
     @Override
     public String trigger() {
         return "Vous avez trouvé : " + this.name;
