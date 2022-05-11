@@ -192,7 +192,9 @@ public class Game {
                         break;
                 }
             }
-            character.setPosition(character.getPosition() + this.dice.throwDice());
+            int diceValue = this.dice.throwDice();
+            this.menu.displayDiceValue(diceValue);
+            character.setPosition(character.getPosition() + diceValue);
             this.menu.displayCharacterPositionOnBoard(character.getPosition() + 1, this.board.getBoardLength());
             if (character.getPosition() >= this.board.getBoardLength()) {
                 isGamePlaying = false;

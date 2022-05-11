@@ -63,6 +63,11 @@ public class MenuTerminal implements Menu{
     }
 
     @Override
+    public void displayDiceValue(int dice) {
+        this.displayMessage("Vous avancez de " + dice + " case(s)");
+    }
+
+    @Override
     public void displayCharacterTakeEquipment(String equipmentMessage) {
         this.displayMessage(equipmentMessage);
     }
