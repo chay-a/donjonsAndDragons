@@ -9,11 +9,6 @@ public abstract class Enemy extends Character implements IEvent {
     }
 
     @Override
-    public void setStrength() {
-
-    }
-
-    @Override
     public String trigger() {
         return "vous êtes tombé sur : " + this.name;
     }

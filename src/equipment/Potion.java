@@ -2,23 +2,9 @@ package equipment;
 
 import event.IEvent;
 
-public abstract class Potion implements IEvent {
-    private int life;
+public abstract class Potion extends Equipment {
 
-    public Potion(int life) {
-        this.life = life;
-    }
-
-    /**
-     * Get the life the potion give
-     * @return int
-     */
-    public int getLife() {
-        return life;
-    }
-
-    @Override
-    public String trigger() {
-        return "Vous avez trouvé : " + this.getClass().getSimpleName();
+    public Potion(int effect, String name) {
+        super(effect, name);
     }
 }

@@ -51,10 +51,6 @@ public abstract class Character {
         return strength;
     }
 
-    /**
-     * Set the strength of the object
-     */
-    public abstract void setStrength();
 
     /**
      * Get the life of the object

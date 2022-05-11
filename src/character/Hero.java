@@ -33,22 +33,13 @@ public abstract class Hero extends Character{
         int enemyLife = enemy.getLife();
         int attack;
         if (this.equipment != null) {
-            int strengthAttack = this.getStrength() + this.equipment.getStrength();
+            int strengthAttack = this.getStrength() + this.equipment.getEffect();
             attack = Math.min(strengthAttack, this.maxStrength);
         } else {
             attack = this.getStrength();
         }
         enemy.setLife(enemyLife - attack);
         return "Vous avez enlevé " + attack + " points de vie à l'ennemi \nL'ennemi a " + enemy.getLife() + " points de vie";
-    }
-
-    /**
-     * Set the strength of the character with the strength of the equipment
-     */
-    @Override
-    public void setStrength() {
-        int newStrength = this.strength + this.equipment.getStrength();
-        this.strength = Math.min(newStrength, this.maxStrength);
     }
 
     /**

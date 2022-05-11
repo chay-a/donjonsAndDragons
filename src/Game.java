@@ -216,10 +216,10 @@ public class Game {
             this.menu.displayEvent(event.trigger());
             if (event instanceof Enemy) {
                 EnemyEvent((Enemy) event, characterInGame);
-            } else if (event instanceof Equipment) {
-                EquipmentEvent((Equipment) event, character);
             } else if (event instanceof Potion) {
                 PotionEvent((Potion) event, character);
+            } else if (event instanceof Equipment) {
+                EquipmentEvent((Equipment) event, character);
             }
         }
     }
@@ -230,7 +230,7 @@ public class Game {
      * @param character Hero
      */
     private void PotionEvent(Potion event, Hero character) {
-        character.addLife(event.getLife());
+        character.addLife(event.getEffect());
         this.menu.displayLife(character.getLife());
     }
 
