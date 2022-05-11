@@ -6,7 +6,7 @@ import equipment.Weapon;
 public class Club extends Weapon {
 
     public Club() {
-        super(3);
+        super(3, "Massue");
     }
 
     @Override

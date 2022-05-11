@@ -15,7 +15,7 @@ public abstract class Enemy extends Character implements IEvent {
 
     @Override
     public String trigger() {
-        return "vous êtes tombé sur : " + this.getClass().getSimpleName();
+        return "vous êtes tombé sur : " + this.name;
     }
 
     @Override

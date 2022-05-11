@@ -4,8 +4,10 @@ import event.IEvent;
 
 public abstract class Equipment implements IEvent {
     private int strength;
+    private String name;
 
-    public Equipment(int strength) {
+    public Equipment(int strength, String name) {
+        this.name = name;
         this.strength = strength;
     }
 
@@ -19,7 +21,7 @@ public abstract class Equipment implements IEvent {
 
     @Override
     public String trigger() {
-        return "Vous avez trouvé : " + this.getClass().getSimpleName();
+        return "Vous avez trouvé : " + this.name;
     }
 
     @Override

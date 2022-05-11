@@ -6,7 +6,7 @@ import equipment.Weapon;
 public class Sword extends Weapon {
 
     public Sword() {
-        super(5);
+        super(5, "Epée");
     }
 
     @Override

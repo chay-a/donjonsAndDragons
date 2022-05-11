@@ -9,8 +9,8 @@ public abstract class Weapon extends Equipment{
         put("Epée", "equipment.weapon.Sword");
     }};
 
-    public Weapon(int strength) {
-        super(strength);
+    public Weapon(int strength, String name) {
+        super(strength, name);
     }
 
     /**
