@@ -3,10 +3,7 @@ import Menu.Menu;
 import Menu.MenuTerminal;
 import board.Board;
 
-import character.Enemy;
 import character.Hero;
-import equipment.Equipment;
-import equipment.Potion;
 import event.IEvent;
 import exceptions.OutOfBoardCharacterException;
 
@@ -75,7 +72,7 @@ public class Game {
     private Boolean isInformationValid(boolean isInfoValid) {
         String userInput = this.menu.validateCharacter();
         if ("quitter".equalsIgnoreCase(userInput)) {
-            this.quitGame();
+            menu.quitGame();
         } else if ("oui".equalsIgnoreCase(userInput)) {
             isInfoValid = true;
 
@@ -90,18 +87,12 @@ public class Game {
     private String chooseCharacterName() {
         String userInput = this.menu.requestCharacterName();
         if ("quitter".equalsIgnoreCase(userInput)) {
-            this.quitGame();
+            menu.quitGame();
         }
         return userInput;
     }
 
-    /**
-     * Exit the program with a message
-     */
-    private void quitGame() {
-        this.menu.quitGame();
-        System.exit(0);
-    }
+
 
     /**
      * Select character type
@@ -111,7 +102,7 @@ public class Game {
         while (character == null) {
             String userInput = this.menu.displayCharacterTypeSelection(Hero.getAllCharacters().keySet().toString());
             if (userInput.equals("quitter")){
-                this.quitGame();
+                menu.quitGame();
             }
             // Introspection/Reflection
             String classType = Hero.getAllCharacters().get(userInput);
@@ -186,7 +177,7 @@ public class Game {
                         this.menu.displayCharacterStats(character.getCharacter());
                         break;
                     case "quitter":
-                        this.quitGame();
+                        menu.quitGame();
                         break;
                     default:
                         break;
@@ -210,120 +201,22 @@ public class Game {
      * @param characterInGame CharacterInGame
      */
     private void playEvent(CharacterInGame characterInGame) {
-        Hero character = characterInGame.getCharacter();
         IEvent event = (IEvent) board.getBoard()[characterInGame.getPosition()].getValue();
-        if (event == null) {
-            this.menu.displayEvent("Cette case est vide...");
-        } else {
-            this.menu.displayEvent(event.trigger());
-            if (event instanceof Enemy) {
-                EnemyEvent((Enemy) event, characterInGame);
-            } else if (event instanceof Potion) {
-                PotionEvent((Potion) event, character);
-            } else if (event instanceof Equipment) {
-                EquipmentEvent((Equipment) event, character);
+        this.menu.displayEvent(event.trigger());
+        event.action(characterInGame, this.menu);
+        //////////////////////////////
+        int nbCharactersDead = 0;
+        for (CharacterInGame character1 : this.characters) {
+            if (character1.isDead()) {
+                nbCharactersDead++;
             }
         }
-    }
-
-    /**
-     * Potion Event
-     * @param event Potion
-     * @param character Hero
-     */
-    private void PotionEvent(Potion event, Hero character) {
-        character.addLife(event.getEffect());
-        this.menu.displayLife(character.getLife());
-    }
-
-    /**
-     * Equipment Event
-     * @param event Equipment
-     * @param character Hero
-     */
-    private void EquipmentEvent(Equipment event, Hero character) {
-        String userInput;
-        boolean isEquipmentEventResolve = false;
-        while (!isEquipmentEventResolve) {
-            userInput = this.menu.requestTakeEquipment(event.getEffect()).toLowerCase();
-            switch (userInput) {
-                case "oui":
-                    this.menu.displayCharacterTakeEquipment(character.takeEquipment(event));
-                    isEquipmentEventResolve = true;
-                    break;
-                case "non":
-                    this.menu.displayCharacterDidntTakeEquipment();
-                    isEquipmentEventResolve = true;
-                    break;
-                case "quitter":
-                    this.quitGame();
-                    break;
-                default:
-                    this.menu.displayInvalidUserInput();
-            }
+        if (nbCharactersDead == this.characters.size()) {
+            this.askToRestart();
         }
+        /////////////////////////////////
     }
 
-    /**
-     * Enemy Event
-     * @param event Enemy
-     * @param characterInGame CharacterInGame
-     */
-    private void EnemyEvent(Enemy event, CharacterInGame characterInGame) {
-        Hero character = characterInGame.getCharacter();
-        boolean isFight = true;
-        while (isFight) {
-            boolean isRequestAction = false;
-            while (!isRequestAction) {
-                switch (this.menu.requestFightAction()) {
-                    case "attaque" :
-                        isRequestAction = true;
-                        isFight = isFight(event, characterInGame, character, isFight);
-                        break;
-                    case "fuir":
-                        isRequestAction = true;
-                        isFight = false;
-                        this.menu.displayFlee();
-                        characterInGame.setPosition(characterInGame.getPosition() - 2);
-                    default:
-                        break;
-                }
-            }
-        }
-    }
-
-    /**
-     * Play a round of a fight
-     * @param event Enemy
-     * @param characterInGame characterInGame
-     * @param character character
-     * @param isFight boolean
-     * @return boolean
-     */
-    private boolean isFight(Enemy event, CharacterInGame characterInGame, Hero character, boolean isFight) {
-        this.menu.displayCharacterFight(character.fight(event));
-        if (event.getLife() <= 0) {
-            this.menu.displayEnemyDead();
-            isFight = false;
-        } else {
-            this.menu.displayEnemyAction(event.action(character));
-            if (character.getLife() <= 0) {
-                isFight = false;
-                this.menu.displayCharacterDead();
-                characterInGame.setDead(true);
-                int nbCharactersDead = 0;
-                for (CharacterInGame character1 : this.characters) {
-                    if (character1.isDead()) {
-                        nbCharactersDead++;
-                    }
-                }
-                if (nbCharactersDead == this.characters.size()) {
-                    this.askToRestart();
-                }
-            }
-        }
-        return isFight;
-    }
 
     /**
      * Ask the user if he/she wants to replay if yes restart the game else quit the game
@@ -338,7 +231,7 @@ public class Game {
             }
             this.start();
         } else if ("quitter".equalsIgnoreCase((userInput))) {
-            this.quitGame();
+            menu.quitGame();
         } else if ("personnage".equalsIgnoreCase(userInput)) {
             Game game = new Game();
             game.start();

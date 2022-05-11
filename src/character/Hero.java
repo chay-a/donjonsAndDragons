@@ -30,8 +30,9 @@ public abstract class Hero extends Character{
      * Return the result of the fight
      * @return String
      */
-    public String fight(Enemy enemy) {
-        int enemyLife = enemy.getLife();
+    @Override
+    public String throwBlow(Character opponent) {
+        int enemyLife = opponent.getLife();
         int attack;
         if (this.equipment != null) {
             int strengthAttack = this.getStrength() + this.equipment.getEffect();
@@ -39,8 +40,8 @@ public abstract class Hero extends Character{
         } else {
             attack = this.getStrength();
         }
-        enemy.setLife(enemyLife - attack);
-        return "Vous avez enlevé " + attack + " points de vie à l'ennemi \nL'ennemi a " + enemy.getLife() + " points de vie";
+        opponent.setLife(enemyLife - attack);
+        return "Vous avez enlevé " + attack + " points de vie à l'ennemi \nL'ennemi a " + opponent.getLife() + " points de vie";
     }
 
     /**
@@ -112,7 +113,6 @@ public abstract class Hero extends Character{
         this.equipment = equipment;
     }
 
-    public abstract String takeEquipment(Equipment equipment);
 
     /**
      * Set the equipment of the character

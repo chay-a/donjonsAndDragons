@@ -12,6 +12,7 @@ import equipment.spell.Lightning;
 import equipment.weapon.Club;
 import equipment.weapon.Sword;
 import event.IEvent;
+import event.VoidCell;
 
 public class Cell {
     private IEvent value;
@@ -51,7 +52,7 @@ public class Cell {
                this.value = new Arbalest();
            }
        } else {
-           this.value = null;
+           this.value = new VoidCell();
        }
     }
 

@@ -68,4 +68,6 @@ public abstract class Character {
         this.life = life;
     }
 
+    public abstract String throwBlow(Character opponent);
+
 }

@@ -20,20 +20,7 @@ public class Warrior extends Hero {
         super.setEquipment(weapon);
     }
 
-    /**
-     * Take the equipment if it is a Weapon
-     * @param equipment Equipment
-     * @return String
-     */
-    @Override
-    public String takeEquipment(Equipment equipment) {
-        if (equipment instanceof Weapon) {
-            this.setEquipment(equipment);
-            return "Vous avez pris l'équipement";
-        } else {
-            return "Vous ne pouvez pas prendre cet équipement";
-        }
-    }
+
 
     /**
      * Reset the values to their default values

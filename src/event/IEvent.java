@@ -1,9 +1,9 @@
 package event;
 
-import character.Hero;
-
+import List.CharacterInGame;
+import Menu.Menu;
 public interface IEvent {
     String trigger();
 
-    String action(Hero hero);
+    void action(CharacterInGame characterInGame, Menu menu);
 }

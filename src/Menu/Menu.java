@@ -17,7 +17,8 @@ public interface Menu {
     void displayDiceValue(int dice);
     String requestFightAction();
     void displayFlee();
-    void displayCharacterTakeEquipment(String equipmentMessage);
+    void displayCharacterTakeEquipment();
+    void displayCharacterCantTakeEquipment();
     void displayCharacterDidntTakeEquipment();
     void displayInvalidUserInput();
     void displayCharacterFight(String characterFight);

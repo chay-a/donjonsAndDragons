@@ -78,8 +78,13 @@ public class MenuTerminal implements Menu{
     }
 
     @Override
-    public void displayCharacterTakeEquipment(String equipmentMessage) {
-        this.displayMessage(equipmentMessage);
+    public void displayCharacterTakeEquipment() {
+        this.displayMessage("Vous avez pris l'équipement");
+    }
+
+    @Override
+    public void displayCharacterCantTakeEquipment() {
+        this.displayMessage("Vous ne pouvez pas prendre cet équipement");
     }
 
     @Override
@@ -135,6 +140,8 @@ public class MenuTerminal implements Menu{
     @Override
     public void quitGame() {
         this.displayMessage("Vous avez quitté le jeu");
+        System.exit(0);
+
     }
 
     public String getMessage(String message) {

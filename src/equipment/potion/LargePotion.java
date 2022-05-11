@@ -1,5 +1,7 @@
 package equipment.potion;
 
+import List.CharacterInGame;
+import Menu.Menu;
 import character.Hero;
 import equipment.Potion;
 
@@ -9,13 +11,10 @@ public class LargePotion extends Potion {
         super(5, "Grande potion");
     }
 
-    /**
-     * Play the action of the event
-     * @param hero Hero
-     * @return String
-     */
+
     @Override
-    public String action(Hero hero) {
-        return null;
+    public void action(CharacterInGame characterInGame, Menu menu) {
+        Hero character = characterInGame.getCharacter();
+        character.addLife(this.getEffect());
     }
 }

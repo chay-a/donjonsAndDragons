@@ -5,15 +5,13 @@ import Menu.Menu;
 import character.Hero;
 import equipment.Potion;
 
-public class SmallPotion extends Potion {
-    public SmallPotion() {
-        super(2, "Petite potion");
+public class SpeedPotion extends Potion {
+    public SpeedPotion() {
+        super(2, "Potion de vitesse");
     }
-
 
     @Override
     public void action(CharacterInGame characterInGame, Menu menu) {
-        Hero character = characterInGame.getCharacter();
-        character.addLife(this.getEffect());
+        characterInGame.setPosition(characterInGame.getPosition() + 2);
     }
 }

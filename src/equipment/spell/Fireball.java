@@ -8,13 +8,4 @@ public class Fireball extends Spell {
         super(7, "Boule de feu");
     }
 
-    /**
-     * Play the action of the event
-     * @param hero Hero
-     * @return String
-     */
-    @Override
-    public String action(Hero hero) {
-        return null;
-    }
 }
