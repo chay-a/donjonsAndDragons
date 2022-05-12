@@ -54,4 +54,8 @@ public interface Menu {
     void displayCharacterDidntTakePotion();
 
     void displayInventory(List<Equipment> inventory);
+
+    String requestEquipmentAction();
+
+    String requestInventoryAction();
 }

@@ -2,8 +2,8 @@ package character;
 
 import Menu.Menu;
 import equipment.Equipment;
-import equipment.Potion;
 import inventory.Inventory;
+import List.CharacterInGame;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -159,5 +159,18 @@ public abstract class Hero extends Character{
         inventory.addAll(this.inventory.getPotions());
         inventory.addAll(this.inventory.getEquipments());
         return inventory;
+    }
+
+    public void inventoryActions(CharacterInGame characterInGame, Menu menu) {
+        String userInput = menu.requestInventoryAction();
+        List<Equipment> inventory = this.getInventory();
+        if (userInput.equalsIgnoreCase("retour")) {
+            return;
+        }
+        for (Equipment equipment1 : inventory) {
+            if (userInput.equals(equipment1.toString())) {
+                this.inventory.EquipmentAction(characterInGame,equipment1, menu);
+            }
+        }
     }
 }

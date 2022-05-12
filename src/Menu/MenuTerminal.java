@@ -208,6 +208,16 @@ public class MenuTerminal implements Menu{
         this.displayMessage(message.toString());
     }
 
+    @Override
+    public String requestEquipmentAction() {
+        return getMessage("Que voulez-vous faire ? L'utiliser (utilise), le supprimer (supprime), revenir en arrière (retour)");
+    }
+
+    @Override
+    public String requestInventoryAction() {
+        return getMessage("Selectionnez un élément de votre inventaire pour avoir plus d'action ou revenir en arrière (retour)");
+    }
+
     public String getMessage(String message) {
         this.displayMessage(message);
         return this.scanner.nextLine();

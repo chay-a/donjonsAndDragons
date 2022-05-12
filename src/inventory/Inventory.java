@@ -1,8 +1,10 @@
 package inventory;
 
 import Menu.Menu;
+import character.Hero;
 import equipment.Equipment;
 import equipment.Potion;
+import List.CharacterInGame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,5 +112,37 @@ public class Inventory {
 
     public List<Potion> getPotions() {
         return potions;
+    }
+
+    public void EquipmentAction(CharacterInGame characterInGame, Equipment equipment, Menu menu) {
+       String userInput = menu.requestEquipmentAction();
+        switch(userInput) {
+            case "utilise" :
+                if (equipment instanceof Potion) {
+                    Potion potion = (Potion) equipment;
+                    potion.use(characterInGame);
+                    break;
+                }
+                this.changeEquipment(characterInGame.getCharacter(), equipment);
+                break;
+            case "supprime" :
+                if (equipment instanceof Potion) {
+                    this.potions.remove(equipment);
+                    break;
+                }
+                this.equipments.remove(equipment);
+                break;
+            case "retour" :
+                return;
+            default:
+                menu.displayInvalidUserInput();
+                break;
+        }
+    }
+
+    private void changeEquipment(Hero character, Equipment equipment) {
+        this.equipments.add(character.getEquipment());
+        this.equipments.remove(equipment);
+        character.setEquipment(equipment);
     }
 }

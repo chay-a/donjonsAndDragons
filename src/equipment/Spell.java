@@ -12,7 +12,7 @@ public abstract class Spell extends Equipment{
 
     private static Map<String, String> translation = new HashMap<>() {{
         put("Boule de feu", "equipment.spell.Fireball");
-        put("Eclair", "equipment.spell.lightning");
+        put("Eclair", "equipment.spell.Lightning");
     }};
     public Spell(int effect, String name) {
         super(effect, name);

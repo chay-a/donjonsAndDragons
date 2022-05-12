@@ -181,7 +181,7 @@ public class Game {
                         this.menu.displayCharacterStats(character.getCharacter());
                         break;
                     case "inventaire" :
-                        this.menu.displayInventory(character.getCharacter().getInventory());
+                        this.inventoryAction(character);
                         break;
                     case "quitter":
                         menu.quitGame();
@@ -201,6 +201,11 @@ public class Game {
             playEvent(character);
         }
         return isGamePlaying;
+    }
+
+    private void inventoryAction(CharacterInGame character) {
+        this.menu.displayInventory(character.getCharacter().getInventory());
+        character.getCharacter().inventoryActions(character, this.menu);
     }
 
     /**
