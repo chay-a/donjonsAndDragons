@@ -1,9 +1,7 @@
 package board;
 
 import character.Enemy;
-import character.enemy.Dragon;
-import character.enemy.Goblin;
-import character.enemy.Witch;
+import character.enemy.*;
 import equipment.*;
 import equipment.animal.Cat;
 import equipment.animal.Falcon;
@@ -19,11 +17,19 @@ import equipment.weapon.Sword;
 public class BoardGenerator {
 
     public static Enemy createEnemy() {
-        double random =  (Math.random()) * 100;
-        if (random < 50) {
+        double random =  (Math.random()) * 7;
+        if (random < 1) {
             return new Goblin();
-        } else if (random < 75) {
+        } else if (random < 2) {
             return new Dragon();
+        } else if(random < 3) {
+            return new BadSpirit();
+        } else if (random < 4) {
+            return new CursedTree();
+        } else if (random < 5) {
+            return new Hunter();
+        } else if (random < 6) {
+            return new Orc();
         }
         return new Witch();
     }

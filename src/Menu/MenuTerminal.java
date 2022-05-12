@@ -144,6 +144,11 @@ public class MenuTerminal implements Menu{
 
     }
 
+    @Override
+    public void displayEnemyDoesntCare() {
+        this.displayMessage("L'ennemi ne semble pas s'intéresser à vous...");
+    }
+
     public String getMessage(String message) {
         this.displayMessage(message);
         return this.scanner.nextLine();

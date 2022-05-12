@@ -30,4 +30,6 @@ public interface Menu {
     String validateCharacter();
     void displayRank(String playerName, int playerRank);
     void quitGame();
+
+    void displayEnemyDoesntCare();
 }
