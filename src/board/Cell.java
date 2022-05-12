@@ -3,6 +3,8 @@ package board;
 import character.enemy.Dragon;
 import character.enemy.Goblin;
 import character.enemy.Witch;
+import equipment.animal.Cat;
+import equipment.animal.Falcon;
 import equipment.distance.Arbalest;
 import equipment.distance.Bow;
 import equipment.potion.LargePotion;
@@ -34,22 +36,26 @@ public class Cell {
                this.value = new Witch();
            }
        } else if (randomType < 90) {
-           if (random < 12) {
+           if (random < 10) {
                this.value = new LargePotion();
-           } else if (random < 24){
+           } else if (random < 20){
                this.value = new SmallPotion();
-           } else if (random < 38) {
+           } else if (random < 30) {
                this.value = new Club();
-           } else if (random < 50) {
+           } else if (random < 40) {
                this.value = new Sword();
-           } else if (random < 62) {
+           } else if (random < 50) {
                this.value= new Lightning();
-           } else if (random < 74){
+           } else if (random < 60){
                this.value = new Fireball();
-           } else if (random < 88) {
+           } else if (random < 70) {
                this.value = new Bow();
-           } else {
+           } else if (random < 80){
                this.value = new Arbalest();
+           } else if (random < 90) {
+               this.value = new Cat();
+           } else {
+               this.value = new Falcon();
            }
        } else {
            this.value = new VoidCell();

@@ -13,6 +13,7 @@ public abstract class Hero extends Character{
         put("Guerrier", "character.hero.Warrior");
         put("Magicien", "character.hero.Wizard");
         put("Elfe", "character.hero.Elf");
+        put("Chopeur", "character.hero.Nicker");
     }};
 
     public Hero(int life, int strength, int maxLife, int maxStrength) {
