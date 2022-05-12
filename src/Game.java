@@ -39,9 +39,13 @@ public class Game {
     public List<CharacterInGame> createCharacters() {
         List<CharacterInGame> players = new ArrayList<CharacterInGame>();
         int nbPlayers = Integer.parseInt(this.menu.requestPlayersNb());
-        for (int i = 1; i < nbPlayers +1; i++) {
-            players.add(new CharacterInGame(this.createCharacter()));
+        if (nbPlayers > 0) {
+            for (int i = 1; i < nbPlayers + 1; i++) {
+                players.add(new CharacterInGame(this.createCharacter()));
+            }
+            return players;
         }
+        menu.quitGame();
         return players;
     }
 
