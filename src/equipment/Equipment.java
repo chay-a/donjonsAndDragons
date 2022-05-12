@@ -1,5 +1,7 @@
 package equipment;
 
+import Menu.Menu;
+import character.Hero;
 import event.IEvent;
 
 public abstract class Equipment implements IEvent {
@@ -9,6 +11,36 @@ public abstract class Equipment implements IEvent {
     public Equipment(int effect, String name) {
         this.name = name;
         this.effect = effect;
+    }
+
+
+    /**
+     * Ask what to do with equipment
+     * @param menu Menu
+     * @param character Hero
+     */
+    public void takeEquipment(Menu menu, Hero character) {
+        String userInput;
+        boolean isEquipmentEventResolve = false;
+        while (!isEquipmentEventResolve) {
+            userInput = menu.requestTakeEquipment(this.getEffect()).toLowerCase();
+            switch (userInput) {
+                case "oui":
+                    character.setEquipment(this);
+                    menu.displayCharacterTakeEquipment();
+                    isEquipmentEventResolve = true;
+                    break;
+                case "non":
+                    menu.displayCharacterDidntTakeEquipment();
+                    isEquipmentEventResolve = true;
+                    break;
+                case "quitter":
+                    menu.quitGame();
+                    break;
+                default:
+                    menu.displayInvalidUserInput();
+            }
+        }
     }
 
     /**

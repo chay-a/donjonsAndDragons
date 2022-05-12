@@ -50,32 +50,14 @@ public abstract class Spell extends Equipment{
     @Override
     public void action(CharacterInGame characterInGame, Menu menu) {
         Hero character = characterInGame.getCharacter();
-        String userInput;
         if (character instanceof Wizard) {
-            boolean isEquipmentEventResolve = false;
-            while (!isEquipmentEventResolve) {
-                userInput = menu.requestTakeEquipment(this.getEffect()).toLowerCase();
-                switch (userInput) {
-                    case "oui":
-                        character.setEquipment(this);
-                        menu.displayCharacterTakeEquipment();
-                        isEquipmentEventResolve = true;
-                        break;
-                    case "non":
-                        menu.displayCharacterDidntTakeEquipment();
-                        isEquipmentEventResolve = true;
-                        break;
-                    case "quitter":
-                        menu.quitGame();
-                        break;
-                    default:
-                        menu.displayInvalidUserInput();
-                }
-            }
+            super.takeEquipment(menu, character);
         } else {
             menu.displayCharacterCantTakeEquipment();
         }
     }
+
+
 
     @Override
     public String toString() {
