@@ -180,6 +180,9 @@ public class Game {
                     case "stats":
                         this.menu.displayCharacterStats(character.getCharacter());
                         break;
+                    case "inventaire" :
+                        this.menu.displayInventory(character.getCharacter().getInventory());
+                        break;
                     case "quitter":
                         menu.quitGame();
                         break;

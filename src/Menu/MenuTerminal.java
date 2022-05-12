@@ -1,7 +1,10 @@
 package Menu;
 
 import character.Hero;
+import equipment.Equipment;
+import equipment.Potion;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuTerminal implements Menu{
@@ -39,7 +42,7 @@ public class MenuTerminal implements Menu{
 
     @Override
     public String requestActionOfATurn() {
-        return this.getMessage("Lancer le dé (dé), voir les stats (stats), quitter (quitter)");
+        return this.getMessage("Lancer le dé (dé), voir les stats (stats), voir l'inventaire (inventaire), quitter (quitter)");
     }
 
     @Override
@@ -59,7 +62,7 @@ public class MenuTerminal implements Menu{
 
     @Override
     public String requestTakeEquipment(int strength) {
-        return this.getMessage("Voulez-vous prendre cet équipement pour une force de " + strength +" ? (Oui/non) ou quitter (quitter)");
+        return this.getMessage("Voulez-vous prendre cet équipement pour un effet de " + strength +" ? (Oui/Non/Inventaire) ou quitter (quitter)");
     }
 
     @Override
@@ -147,6 +150,62 @@ public class MenuTerminal implements Menu{
     @Override
     public void displayEnemyDoesntCare() {
         this.displayMessage("L'ennemi ne semble pas s'intéresser à vous...");
+    }
+
+    @Override
+    public void displayFullInventory() {
+        this.displayMessage("Votre inventaire est plein...");
+    }
+
+    @Override
+    public String requestInventoryElementChange() {
+        return this.getMessage("Voulez-vous l'échanger avec autre chose ? (oui/non)");
+    }
+
+    @Override
+    public void displayPotionInventory(List<Potion> potions) {
+        StringBuilder message = new StringBuilder("Inventaire potions : \n");
+        for (Potion potion : potions) {
+            message.append(potion.toString()).append("\n");
+        }
+        this.displayMessage(message.toString());
+    }
+
+    @Override
+    public String requestElementToChangeInInventory() {
+        return getMessage("Avec quel élément voulez-vous changer ?");
+    }
+
+    @Override
+    public void displayEquipmentInventory(List<Equipment> equipments) {
+        StringBuilder message = new StringBuilder("Inventaire équipements : \n");
+        for (Equipment equipment : equipments) {
+            message.append(equipment.toString()).append("\n");
+        }
+        this.displayMessage(message.toString());
+    }
+
+    @Override
+    public String requestTakePotion(int effect) {
+        return this.getMessage("Voulez-vous prendre cette potion pour un effet de " + effect +" ? (Oui/Non/Inventaire) ou quitter (quitter)");    }
+
+    @Override
+    public void displayCharacterTakePotion() {
+        this.displayMessage("Vous avez pris la potion");
+    }
+
+    @Override
+    public void displayCharacterDidntTakePotion() {
+        this.displayMessage("Vous n'avez pas pris la potion");
+    }
+
+    @Override
+    public void displayInventory(List<Equipment> inventory) {
+        StringBuilder message = new StringBuilder("Votre inventaire : \n");
+        for (Equipment equipment : inventory) {
+            message.append(equipment.toString()).append("\n");
+        }
+        this.displayMessage(message.toString());
     }
 
     public String getMessage(String message) {

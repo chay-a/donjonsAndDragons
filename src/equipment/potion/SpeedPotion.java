@@ -11,7 +11,7 @@ public class SpeedPotion extends Potion {
     }
 
     @Override
-    public void action(CharacterInGame characterInGame, Menu menu) {
+    public void use(CharacterInGame characterInGame) {
         characterInGame.setPosition(characterInGame.getPosition() + 2);
     }
 }

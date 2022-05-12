@@ -1,6 +1,10 @@
 package Menu;
 
 import character.Hero;
+import equipment.Equipment;
+import equipment.Potion;
+
+import java.util.List;
 
 public interface Menu {
     String requestPlayersNb();
@@ -32,4 +36,22 @@ public interface Menu {
     void quitGame();
 
     void displayEnemyDoesntCare();
+
+    void displayFullInventory();
+
+    String requestInventoryElementChange();
+
+    void displayPotionInventory(List<Potion> potions);
+
+    String requestElementToChangeInInventory();
+
+    void displayEquipmentInventory(List<Equipment> equipments);
+
+    String requestTakePotion(int effect);
+
+    void displayCharacterTakePotion();
+
+    void displayCharacterDidntTakePotion();
+
+    void displayInventory(List<Equipment> inventory);
 }

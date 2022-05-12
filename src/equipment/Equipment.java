@@ -34,6 +34,10 @@ public abstract class Equipment implements IEvent {
                     menu.displayCharacterDidntTakeEquipment();
                     isEquipmentEventResolve = true;
                     break;
+                case "inventaire" :
+                    character.setInventory(this, menu);
+                    isEquipmentEventResolve = true;
+                    break;
                 case "quitter":
                     menu.quitGame();
                     break;

@@ -12,7 +12,7 @@ public class SmallPotion extends Potion {
 
 
     @Override
-    public void action(CharacterInGame characterInGame, Menu menu) {
+    public void use(CharacterInGame characterInGame) {
         Hero character = characterInGame.getCharacter();
         character.addLife(this.getEffect());
     }

@@ -35,14 +35,14 @@ public class BoardGenerator {
     }
 
     public static Equipment createEquipment() {
-        double random =  (Math.random()) * 5;
-        if (random <1) {
+        double random =  (Math.random()) * 100;
+        if (random <10) {
             return createWeapon();
-        } else if (random < 2) {
+        } else if (random < 60) {
             return createPotion();
-        } else if (random < 3) {
+        } else if (random < 70) {
             return createSpell();
-        } else if (random < 4) {
+        } else if (random < 80) {
             return createDistance();
         }
         return createAnimal();

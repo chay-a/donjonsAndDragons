@@ -1,14 +1,20 @@
 package character;
 
+import Menu.Menu;
 import equipment.Equipment;
+import equipment.Potion;
+import inventory.Inventory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class Hero extends Character{
     private int maxLife;
     private int maxStrength;
     private Equipment equipment;
+    private Inventory inventory;
     private static Map<String, String> allCharacters = new HashMap<String, String>() {{
         put("Guerrier", "character.hero.Warrior");
         put("Magicien", "character.hero.Wizard");
@@ -17,14 +23,15 @@ public abstract class Hero extends Character{
     }};
 
     public Hero(int life, int strength, int maxLife, int maxStrength) {
-      this(life, strength, maxLife, maxStrength, null);
+      this(life, strength, maxLife, maxStrength, null, new Inventory());
     }
 
-    public Hero(int life, int strength, int maxLife, int maxStrength, Equipment equipment){
+    public Hero(int life, int strength, int maxLife, int maxStrength, Equipment equipment, Inventory inventory){
         super(life, strength);
         this.maxLife = maxLife;
         this.maxStrength = maxStrength;
         this.equipment = equipment;
+        this.inventory = inventory;
     }
 
     /**
@@ -51,6 +58,14 @@ public abstract class Hero extends Character{
     public void addLife(int life) {
         int newLife = super.life + life;
         super.setLife(Math.min(newLife, this.maxLife));
+    }
+
+    /**
+     * Set new equipment in the inventory
+     * @param equipment Equipment
+     */
+    public void setInventory(Equipment equipment, Menu menu) {
+        this.inventory.setEquipment(equipment , menu);
     }
 
     /**
@@ -137,5 +152,12 @@ public abstract class Hero extends Character{
      */
     public void setMaxStrength(int maxStrength) {
         this.maxStrength = maxStrength;
+    }
+
+    public List<Equipment> getInventory() {
+        List<Equipment> inventory = new ArrayList<>();
+        inventory.addAll(this.inventory.getPotions());
+        inventory.addAll(this.inventory.getEquipments());
+        return inventory;
     }
 }
