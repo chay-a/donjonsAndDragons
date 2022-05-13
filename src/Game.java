@@ -5,6 +5,8 @@ import board.Board;
 
 import character.Hero;
 import database.Database;
+import dice.DiceScripted;
+import dice.IDice;
 import event.IEvent;
 import exceptions.OutOfBoardCharacterException;
 
@@ -15,7 +17,7 @@ public class Game {
     private List<CharacterInGame> characters = new ArrayList<>();
     private Board board;
     private Menu menu;
-    private Dice dice;
+    private IDice dice;
     private Database database;
 
     public static void main(String[] args) {
@@ -30,7 +32,7 @@ public class Game {
     public Game() {
         this.menu = new MenuTerminal();
         this.database = new Database();
-        this.dice = new Dice();
+        this.dice = new DiceScripted();
         this.characters = this.createCharacters();
         this.board = this.createBoard();
     }

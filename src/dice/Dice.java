@@ -1,6 +1,8 @@
+package dice;
+
 import java.util.Random;
 
-public class Dice {
+public class Dice implements IDice {
     public static void main(String[] args) {
         Dice dice = new Dice();
         for (int i = 0; i < 10000; i++) {
@@ -15,6 +17,7 @@ public class Dice {
      * Throw a dice
      * @return int number between 1 and 6
      */
+    @Override
     public int throwDice() {
         // Random number between 1 and 6
         Random random = new Random();
