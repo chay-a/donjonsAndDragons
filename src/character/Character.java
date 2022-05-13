@@ -14,6 +14,10 @@ public abstract class Character {
         this(null, life, strength);
     }
 
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
     /**
      * Hydtrate the object with every value define in parameters
      * @param name name of the object

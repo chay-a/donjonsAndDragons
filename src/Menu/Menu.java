@@ -65,4 +65,12 @@ public interface Menu {
     void displayGameNotSaved();
 
     void displayDatabaseError();
+
+    void displayCharacterDatabase(String name, String life, String strength, int i);
+
+    String requestCharactersSaved();
+
+    String requestDatabaseCharactersAction();
+
+    String requestDatabaseCharacterNumber();
 }

@@ -1,6 +1,7 @@
 package database;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import List.CharacterInGame;
 import Menu.Menu;
@@ -50,10 +51,10 @@ public class Database {
             if (character.getId() == null) {
                 rs = stmt.executeUpdate("INSERT INTO hero(name, life, strength, max_life, max_strength, type) VALUES ('" + name + "', " + life + ", " + strength + ", " + maxLife + ", " + maxStrength + ",'" + character.getClass().getSimpleName() + "');");
             } else {
-                rs = stmt.executeUpdate("UPDATE hero SET name = '" +name +"', life ="+ life+", strength = "+strength+", maxLife ="+maxLife+", maxStrength=" +maxStrength+" WHERE id="+character.getId()+";");
+                rs = stmt.executeUpdate("UPDATE hero SET name = '" +name +"', life ="+ life+", strength = "+strength+", max_life ="+maxLife+", max_strength=" +maxStrength+" WHERE id="+character.getId()+";");
             }
             } catch (SQLException e) {
-            menu.displayDatabaseError();
+            e.printStackTrace();
         } finally {
             try {
                 if (stmt != null) {
@@ -62,5 +63,66 @@ public class Database {
             } catch (SQLException ignore) {
             }
         }
+    }
+
+    public List<Integer> getCharacters(Menu menu) {
+        List<Integer> listId = new ArrayList<>();
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = this.connection.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM hero");
+            int i = 1;
+            while(rs.next()) {
+                String name = rs.getString("name");
+                String life = rs.getString("life");
+                String strength = rs.getString("strength");
+                menu.displayCharacterDatabase(name, life, strength, i);
+                listId.add(rs.getInt("id"));
+                i++;
+            }
+        } catch (SQLException e) {
+            menu.displayDatabaseError();
+        }
+        return listId;
+    }
+
+    public void removeCharacter(Integer integer, Menu menu) {
+        Statement stmt = null;
+        int rs;
+        try {
+            stmt = this.connection.createStatement();
+            rs = stmt.executeUpdate("DELETE FROM hero WHERE id="+integer);
+        } catch (SQLException e) {
+            menu.displayDatabaseError();
+        }
+    }
+
+    public Hero getCharacter(Integer integer, Menu menu) {
+        Hero character = null;
+        Statement stmt = null;
+        ResultSet rs;
+        try {
+            stmt = this.connection.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM hero WHERE id="+integer);
+            try {
+                while (rs.next()){
+                    String type = rs.getString("type");
+                    Class<?> characterType = Class.forName("character.hero."+type);
+                    character = (Hero) characterType.getDeclaredConstructor().newInstance();
+                    character.setId(integer);
+                    character.setName(rs.getString("name"));
+                    character.setLife(rs.getInt("life"));
+                    character.setStrength(rs.getInt("strength"));
+                    character.setMaxLife(rs.getInt("max_life"));
+                    character.setMaxStrength(rs.getInt("max_strength"));
+                }
+            } catch (Exception e) {
+                menu.displayWrongType();
+            }
+        } catch (SQLException e) {
+            menu.displayDatabaseError();
+        }
+        return character;
     }
 }

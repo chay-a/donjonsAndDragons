@@ -42,14 +42,66 @@ public class Game {
     public List<CharacterInGame> createCharacters() {
         List<CharacterInGame> players = new ArrayList<CharacterInGame>();
         int nbPlayers = Integer.parseInt(this.menu.requestPlayersNb());
+        String userInput = menu.requestCharactersSaved();
+        switch(userInput) {
+            case "oui":
+                while(players.size()<=0) {
+                    List<Integer> listId = this.database.getCharacters(this.menu);
+                    System.out.println(listId);
+                    userInput = menu.requestDatabaseCharactersAction();
+                    switch (userInput) {
+                        case "utilise":
+                            List<CharacterInGame> playersList = getDatabaseCharacters(players, nbPlayers, listId);
+                            if (playersList != null) return playersList;
+                        case "supprime":
+                            deleteDatabaseCharacter(listId);
+                            break;
+                        default:
+                            menu.displayWrongType();
+                            break;
+                    }
+                }
+            case "non":
+                if (nbPlayers > 0) {
+                    for (int i = 1; i < nbPlayers + 1; i++) {
+                        players.add(new CharacterInGame(this.createCharacter()));
+                    }
+                    return players;
+                }
+                break;
+            default:
+                menu.displayWrongType();
+                break;
+        }
+
+        menu.quitGame();
+        return players;
+    }
+
+    private void deleteDatabaseCharacter(List<Integer> listId) {
+        String userInput;
+        userInput = menu.requestDatabaseCharacterNumber();
+        int index = Integer.parseInt(userInput) -1;
+        if (index <= listId.size()) {
+            this.database.removeCharacter(listId.get(index), this.menu);
+        }
+    }
+
+    private List<CharacterInGame> getDatabaseCharacters(List<CharacterInGame> players, int nbPlayers, List<Integer> listId) {
+        String userInput;
         if (nbPlayers > 0) {
             for (int i = 1; i < nbPlayers + 1; i++) {
-                players.add(new CharacterInGame(this.createCharacter()));
+                userInput = menu.requestDatabaseCharacterNumber();
+                int index = Integer.parseInt(userInput) -1;
+                if (Integer.parseInt(userInput) <= listId.size()) {
+                    players.add(new CharacterInGame(this.database.getCharacter(listId.get(index), this.menu)));
+                } else {
+                    break;
+                }
             }
             return players;
         }
-        menu.quitGame();
-        return players;
+        return null;
     }
 
     /**

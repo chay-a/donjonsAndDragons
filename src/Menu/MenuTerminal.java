@@ -234,6 +234,26 @@ public class MenuTerminal implements Menu{
         displayMessage("Un erreur est survenue");
     }
 
+    @Override
+    public void displayCharacterDatabase(String name, String life, String strength, int i) {
+        displayMessage("------------------------\nPersonnage ("+i+") : " + name + "\n" + "vie : " + life + "\n" + "force : " + strength);
+    }
+
+    @Override
+    public String requestCharactersSaved() {
+        return getMessage("Voulez-vous utiliser des personnages sauvegardés");
+    }
+
+    @Override
+    public String requestDatabaseCharactersAction() {
+        return getMessage("Voulez-vous utiliser (utilise) ou supprimer(supprime)");
+    }
+
+    @Override
+    public String requestDatabaseCharacterNumber() {
+        return getMessage("Choississez le nombre correspondant au personnage");
+    }
+
     public String getMessage(String message) {
         this.displayMessage(message);
         return this.scanner.nextLine();
