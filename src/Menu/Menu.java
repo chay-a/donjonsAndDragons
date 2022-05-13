@@ -3,6 +3,7 @@ package Menu;
 import character.Hero;
 import equipment.Equipment;
 import equipment.Potion;
+import inventory.IIventory;
 
 import java.util.List;
 
@@ -41,11 +42,11 @@ public interface Menu {
 
     String requestInventoryElementChange();
 
-    void displayPotionInventory(List<Potion> potions);
+    void displayPotionInventory(List<IIventory> potions);
 
     String requestElementToChangeInInventory();
 
-    void displayEquipmentInventory(List<Equipment> equipments);
+    void displayEquipmentInventory(List<IIventory> equipments);
 
     String requestTakePotion(int effect);
 

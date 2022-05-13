@@ -11,7 +11,7 @@ public class ThunderClap extends Potion {
 
 
     @Override
-    public void action(CharacterInGame characterInGame, Menu menu) {
+    public void use(CharacterInGame characterInGame) {
         // two times the strength of the character for the next fight only
     }
 }

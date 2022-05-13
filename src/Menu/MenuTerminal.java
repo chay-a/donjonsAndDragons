@@ -3,6 +3,7 @@ package Menu;
 import character.Hero;
 import equipment.Equipment;
 import equipment.Potion;
+import inventory.IIventory;
 
 import java.util.List;
 import java.util.Scanner;
@@ -163,9 +164,9 @@ public class MenuTerminal implements Menu{
     }
 
     @Override
-    public void displayPotionInventory(List<Potion> potions) {
+    public void displayPotionInventory(List<IIventory> potions) {
         StringBuilder message = new StringBuilder("Inventaire potions : \n");
-        for (Potion potion : potions) {
+        for (IIventory potion : potions) {
             message.append(potion.toString()).append("\n");
         }
         this.displayMessage(message.toString());
@@ -177,9 +178,9 @@ public class MenuTerminal implements Menu{
     }
 
     @Override
-    public void displayEquipmentInventory(List<Equipment> equipments) {
+    public void displayEquipmentInventory(List<IIventory> equipments) {
         StringBuilder message = new StringBuilder("Inventaire équipements : \n");
-        for (Equipment equipment : equipments) {
+        for (IIventory equipment : equipments) {
             message.append(equipment.toString()).append("\n");
         }
         this.displayMessage(message.toString());

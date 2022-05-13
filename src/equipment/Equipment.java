@@ -3,8 +3,11 @@ package equipment;
 import Menu.Menu;
 import character.Hero;
 import event.IEvent;
+import inventory.IIventory;
 
-public abstract class Equipment implements IEvent {
+import java.util.List;
+
+public abstract class Equipment implements IEvent, IIventory {
     private int effect;
     private String name;
 
@@ -67,5 +70,53 @@ public abstract class Equipment implements IEvent {
     @Override
     public String toString() {
         return this.name;
+    }
+
+    @Override
+    public void fullInventory(Menu menu, List<IIventory> list) {
+        boolean isRequestTakeElementValid = false;
+        while(!isRequestTakeElementValid) {
+            // You can't take this potion cause your Inventory is full
+            menu.displayFullInventory();
+            // Ask to change with another element
+            String userInput = menu.requestInventoryElementChange().toLowerCase();
+            switch (userInput) {
+                case "oui":
+                    isRequestTakeElementValid = isRequestTakeElementValid(menu, list);
+                    break;
+                case "non":
+                    menu.displayCharacterDidntTakeEquipment();
+                    isRequestTakeElementValid = true;
+                    break;
+                default:
+                    menu.displayInvalidUserInput();
+                    break;
+            }
+        }
+    }
+
+    private boolean isRequestTakeElementValid(Menu menu, List<IIventory> list) {
+        boolean isRequestTakeElementValid;
+        String userInput;
+        isRequestTakeElementValid = true;
+        boolean isRequestValid = false;
+        while (!isRequestValid) {
+            if (this instanceof Potion) {
+                menu.displayPotionInventory(list);
+            } else {
+                menu.displayEquipmentInventory(list);
+            }
+            userInput = menu.requestElementToChangeInInventory();
+            for (IIventory elementInArray : list) {
+                if (userInput.equals(elementInArray.toString())) {
+                    // Loop break
+                    isRequestValid = true;
+                    int index = list.indexOf(elementInArray);
+                    list.set(index, this);
+                    break;
+                }
+            }
+        }
+        return isRequestTakeElementValid;
     }
 }

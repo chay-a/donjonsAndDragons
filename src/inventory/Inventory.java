@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Inventory {
-    private List<Equipment> equipments = new ArrayList<>();
-    private List<Potion> potions = new ArrayList<>();
+    private List<IIventory> equipments = new ArrayList<>();
+    private List<IIventory> potions = new ArrayList<>();
     private int maxEquipments;
     private int maxPotions;
 
@@ -31,90 +31,26 @@ public class Inventory {
             if (potions.size() < this.maxPotions) {
                 potions.add(potion);
             } else {
-                boolean isRequestTakeElementValid = false;
-                while(!isRequestTakeElementValid) {
-                    // You can't take this potion cause your Inventory is full
-                    menu.displayFullInventory();
-                    // Ask to change with another element
-                    String userInput = menu.requestInventoryElementChange().toLowerCase();
-                    switch (userInput) {
-                        case "oui":
-                            isRequestTakeElementValid = true;
-                            boolean isRequestValid = false;
-                            while (!isRequestValid) {
-                                menu.displayPotionInventory(this.potions);
-                                userInput = menu.requestElementToChangeInInventory();
-                                for (Potion potionInArray : potions) {
-                                    if (userInput.equals(potionInArray.toString())) {
-                                        // Loop break
-                                        isRequestValid = true;
-                                        int index = potions.indexOf(potionInArray);
-                                        potions.set(index, potion);
-                                        break;
-                                    }
-                                }
-                            }
-                            break;
-                        case "non":
-                            menu.displayCharacterDidntTakeEquipment();
-                            isRequestTakeElementValid = true;
-                            break;
-                        default:
-                            menu.displayInvalidUserInput();
-                            break;
-                    }
-                }
+                equipment.fullInventory(menu, this.potions);
             }
         } else {
             if (equipments.size() < this.maxEquipments) {
                 equipments.add(equipment);
             } else {
-                boolean isRequestTakeElementValid = false;
-                while(!isRequestTakeElementValid) {
-                    // You can't take this potion cause your Inventory is full
-                    menu.displayFullInventory();
-                    // Ask to change with another element
-                    String userInput = menu.requestInventoryElementChange().toLowerCase();
-                    switch (userInput) {
-                        case "oui":
-                            isRequestTakeElementValid = true;
-                            boolean isRequestValid = false;
-                            while (!isRequestValid) {
-                                menu.displayEquipmentInventory(this.equipments);
-                                userInput = menu.requestElementToChangeInInventory();
-                                for (Equipment equipmentInArray : equipments) {
-                                    if (userInput.equals(equipmentInArray.toString())) {
-                                        // Loop break
-                                        isRequestValid = true;
-                                        int index = equipments.indexOf(equipmentInArray);
-                                        equipments.set(index, equipment);
-                                        break;
-                                    }
-                                }
-                            }
-                            break;
-                        case "non":
-                            menu.displayCharacterDidntTakeEquipment();
-                            isRequestTakeElementValid = true;
-                            break;
-                        default:
-                            menu.displayInvalidUserInput();
-                            break;
-                    }
-                }
+                equipment.fullInventory(menu, this.equipments);
             }
         }
     }
 
-    public List<Equipment> getEquipments() {
+    public List<IIventory> getEquipments() {
         return equipments;
     }
 
-    public List<Potion> getPotions() {
+    public List<IIventory> getPotions() {
         return potions;
     }
 
-    public void EquipmentAction(CharacterInGame characterInGame, Equipment equipment, Menu menu) {
+    public void EquipmentAction(CharacterInGame characterInGame, IIventory equipment, Menu menu) {
        String userInput = menu.requestEquipmentAction();
         switch(userInput) {
             case "utilise" :
@@ -140,9 +76,9 @@ public class Inventory {
         }
     }
 
-    private void changeEquipment(Hero character, Equipment equipment) {
+    private void changeEquipment(Hero character, IIventory equipment) {
         this.equipments.add(character.getEquipment());
         this.equipments.remove(equipment);
-        character.setEquipment(equipment);
+        character.setEquipment((Equipment) equipment);
     }
 }

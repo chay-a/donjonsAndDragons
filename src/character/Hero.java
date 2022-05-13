@@ -2,6 +2,8 @@ package character;
 
 import Menu.Menu;
 import equipment.Equipment;
+import equipment.Potion;
+import inventory.IIventory;
 import inventory.Inventory;
 import List.CharacterInGame;
 
@@ -156,8 +158,14 @@ public abstract class Hero extends Character{
 
     public List<Equipment> getInventory() {
         List<Equipment> inventory = new ArrayList<>();
-        inventory.addAll(this.inventory.getPotions());
-        inventory.addAll(this.inventory.getEquipments());
+        for (IIventory potion : this.inventory.getPotions()) {
+            int index = this.inventory.getPotions().indexOf(potion);
+            inventory.add((Equipment) potion);
+        }
+        for (IIventory equipment : this.inventory.getEquipments()) {
+            int index = this.inventory.getEquipments().indexOf(equipment);
+            inventory.add((Equipment) equipment);
+        }
         return inventory;
     }
 
