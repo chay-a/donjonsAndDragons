@@ -59,4 +59,10 @@ public interface Menu {
     String requestEquipmentAction();
 
     String requestInventoryAction();
+
+    String requestGameSaving();
+
+    void displayGameNotSaved();
+
+    void displayDatabaseError();
 }

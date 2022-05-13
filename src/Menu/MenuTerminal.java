@@ -219,6 +219,21 @@ public class MenuTerminal implements Menu{
         return getMessage("Selectionnez un élément de votre inventaire pour avoir plus d'action ou revenir en arrière (retour)");
     }
 
+    @Override
+    public String requestGameSaving() {
+        return getMessage("Voulez-vous sauvegarder votre partie ? (Oui/Non)");
+    }
+
+    @Override
+    public void displayGameNotSaved() {
+        displayMessage("Votre partie n'a pas été sauvegardé");
+    }
+
+    @Override
+    public void displayDatabaseError() {
+        displayMessage("Un erreur est survenue");
+    }
+
     public String getMessage(String message) {
         this.displayMessage(message);
         return this.scanner.nextLine();

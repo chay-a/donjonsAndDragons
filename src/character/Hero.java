@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Hero extends Character{
+    private Integer id;
     private int maxLife;
     private int maxStrength;
     private Equipment equipment;
@@ -24,16 +25,29 @@ public abstract class Hero extends Character{
         put("Chopeur", "character.hero.Nicker");
     }};
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Hero(int life, int strength, Integer id, int maxLife, int maxStrength, Equipment equipment, Inventory inventory) {
+        super(life, strength);
+        this.id = id;
+        this.maxLife = maxLife;
+        this.maxStrength = maxStrength;
+        this.equipment = equipment;
+        this.inventory = inventory;
+    }
+
     public Hero(int life, int strength, int maxLife, int maxStrength) {
       this(life, strength, maxLife, maxStrength, null, new Inventory());
     }
 
     public Hero(int life, int strength, int maxLife, int maxStrength, Equipment equipment, Inventory inventory){
-        super(life, strength);
-        this.maxLife = maxLife;
-        this.maxStrength = maxStrength;
-        this.equipment = equipment;
-        this.inventory = inventory;
+        this(life, strength, null, maxLife, maxStrength, equipment, inventory);
     }
 
     /**

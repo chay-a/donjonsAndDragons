@@ -4,6 +4,7 @@ import Menu.MenuTerminal;
 import board.Board;
 
 import character.Hero;
+import database.Database;
 import event.IEvent;
 import exceptions.OutOfBoardCharacterException;
 
@@ -15,6 +16,7 @@ public class Game {
     private Board board;
     private Menu menu;
     private Dice dice;
+    private Database database;
 
     public static void main(String[] args) {
      //   System.out.println(System.getProperty("user.language")+"-"+System.getProperty("user.country"));
@@ -27,6 +29,7 @@ public class Game {
      */
     public Game() {
         this.menu = new MenuTerminal();
+        this.database = new Database();
         this.dice = new Dice();
         this.characters = this.createCharacters();
         this.board = this.createBoard();
@@ -133,7 +136,7 @@ public class Game {
             for (CharacterInGame character : this.characters) {
                 this.menu.displayRank(character.getCharacter().getName(), this.characters.indexOf(character) +1);
             }
-            this.askToRestart();
+            this.endGame();
         }
     }
 
@@ -224,16 +227,32 @@ public class Game {
             }
         }
         if (nbCharactersDead == this.characters.size()) {
-            this.askToRestart();
+            this.endGame();
         }
         /////////////////////////////////
     }
 
 
     /**
-     * Ask the user if he/she wants to replay if yes restart the game else quit the game
+     * Trigger the end of the game menus
      */
-    private void askToRestart() {
+    private void endGame() {
+        String userInput = menu.requestGameSaving();
+        switch (userInput) {
+            case "oui" :
+                this.database.saveCharacters(this.characters, this.menu);
+                break;
+            case "non" :
+                menu.displayGameNotSaved();
+                break;
+            default:
+                break;
+        }
+
+        this.restart();
+    }
+
+    private void restart() {
         String userInput = this.menu.requestRestart().toLowerCase();
         if ("recommencer".equalsIgnoreCase(userInput)) {
             for (CharacterInGame character : this.characters) {
