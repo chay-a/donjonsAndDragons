@@ -270,7 +270,7 @@ public class Game {
      * @param characterInGame CharacterInGame
      */
     private void playEvent(CharacterInGame characterInGame) {
-        IEvent event = (IEvent) board.getBoard()[characterInGame.getPosition()].getValue();
+        IEvent event = (IEvent) board.getBoard().get(characterInGame.getPosition()).getValue();
         this.menu.displayEvent(event.trigger());
         event.action(characterInGame, this.menu);
         //////////////////////////////
