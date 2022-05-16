@@ -17,14 +17,11 @@ public class Database {
 
     private void loadDatabase() {
         // Chargement du driver
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-        }
 
         try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
             this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/DonjonsAndDragons", "chay-a", "KUntR%ZNt#3^r#9i58iq*");
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -55,7 +52,7 @@ public class Database {
                         throw new SQLException("Creating user failed, no ID obtained.");
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
             } else {
                 rs = stmt.executeUpdate("UPDATE hero SET name = '" +name +"', life ="+ life+", strength = "+strength+", max_life ="+maxLife+", max_strength=" +maxStrength+" WHERE id="+character.getId()+";");
