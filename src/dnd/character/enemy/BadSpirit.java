@@ -1,6 +1,7 @@
 package dnd.character.enemy;
 
 import dnd.character.inGame.CharacterInGame;
+import dnd.exceptions.CharacterFleeException;
 import dnd.menu.Menu;
 import dnd.character.Enemy;
 import dnd.character.hero.Wizard;
@@ -14,7 +15,7 @@ public class BadSpirit extends Enemy {
     }
 
     @Override
-    public void action(CharacterInGame characterInGame, Menu menu) {
+    public void action(CharacterInGame characterInGame, Menu menu) throws CharacterFleeException {
         if (characterInGame.getCharacter() instanceof Wizard) {
             super.action(characterInGame, menu);
         } else {
