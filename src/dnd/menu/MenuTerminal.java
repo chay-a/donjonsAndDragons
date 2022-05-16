@@ -17,7 +17,17 @@ public class MenuTerminal implements Menu{
 
     @Override
     public void displayCharacterStats(Hero character) {
-        this.displayMessage(character.toString());
+        String equipmentString;
+        if (character.getEquipment() == null) {
+            equipmentString = "aucun";
+        } else {
+            equipmentString = character.getEquipment().getClass().getSimpleName();
+        }
+        this.displayMessage("Votre personnage est : " + Hero.getInternalNameFromClassName(character.getClass().getName()) + "\n" +
+                "Le nom de votre personnage : " + character.getName() + "\n" +
+                "La vie de votre personnage : " + character.getLife() + ", max : " + character.getMaxLife() + "\n" +
+                "La force de votre personnage : " + character.getStrength() + ", max : " + character.getMaxStrength() + "\n" +
+                "Votre équipement : " + equipmentString);
     }
 
     @Override

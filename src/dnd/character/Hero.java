@@ -92,7 +92,7 @@ public abstract class Hero extends Character{
      * @param className String
      * @return String
      */
-    private static String getInternalNameFromClassName(String className) {
+    public static String getInternalNameFromClassName(String className) {
         for (String frName : allCharacters.keySet()) {
             String cName = (String) allCharacters.get(frName);
             if (className.equals(cName)) {
