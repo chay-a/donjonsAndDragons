@@ -49,6 +49,7 @@ public abstract class Spell extends Equipment{
      */
     @Override
     public void action(CharacterInGame characterInGame, Menu menu) {
+        menu.displayEquipmentEvent(this.getName());
         Hero character = characterInGame.getCharacter();
         if (character instanceof Wizard) {
             super.takeEquipment(menu, character);

@@ -16,20 +16,12 @@ public abstract class Enemy extends Character implements IEvent {
     }
 
     /**
-     * Return message what type of dnd.event it is
-     * @return String
-     */
-    @Override
-    public String trigger() {
-        return "vous êtes tombé sur : " + this.name;
-    }
-
-    /**
      * Play the action of the dnd.event
      * @param characterInGame CharacterInGame
      */
     @Override
     public void action(CharacterInGame characterInGame, Menu menu) throws CharacterFleeException {
+        menu.displayEnemyEvent(this.getName());
         boolean isFight = true;
         while (isFight) {
             boolean isRequestAction = false;

@@ -33,6 +33,7 @@ public abstract class Weapon extends Equipment{
      */
     @Override
     public void action(CharacterInGame characterInGame, Menu menu) {
+        menu.displayEquipmentEvent(this.getName());
         Hero character = characterInGame.getCharacter();
         if (character instanceof Warrior) {
             super.takeEquipment(menu, character);

@@ -283,7 +283,6 @@ public class Game {
      */
     private void playEvent(CharacterInGame characterInGame) {
         IEvent event = (IEvent) board.getBoard().get(characterInGame.getPosition()).getValue();
-        this.menu.displayEvent(event.trigger());
         try {
             event.action(characterInGame, this.menu);
         } catch (CharacterFleeException e) {

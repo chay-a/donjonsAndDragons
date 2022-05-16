@@ -15,7 +15,6 @@ public interface Menu {
     void displayCharacterTurn(String characterName);
     String requestActionOfATurn();
     void displayCharacterPositionOnBoard(int positionCharacter, int boardLength);
-    void displayEvent(String eventMessage);
     void displayLife(int life);
     String requestTakeEquipment(int strength);
     void displayDiceValue(int dice);
@@ -74,4 +73,10 @@ public interface Menu {
     String requestDatabaseCharacterNumber();
 
     void displayEnemyAlreadyDead();
+
+    void displayEnemyEvent(String name);
+
+    void displayEquipmentEvent(String name);
+
+    void displayVoidCellEvent();
 }

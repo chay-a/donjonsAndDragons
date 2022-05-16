@@ -45,6 +45,7 @@ public abstract class Animal extends Equipment {
 
     @Override
     public void action(CharacterInGame characterInGame, Menu menu) {
+        menu.displayEquipmentEvent(this.getName());
         Hero character = characterInGame.getCharacter();
         if (character instanceof Nicker) {
             super.takeEquipment(menu, character);

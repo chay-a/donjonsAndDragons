@@ -58,15 +58,6 @@ public abstract class Equipment implements IEvent, IIventory {
         return effect;
     }
 
-    /**
-     * Return message what type of dnd.event it is
-     * @return String
-     */
-    @Override
-    public String trigger() {
-        return "Vous avez trouvé : " + this.name;
-    }
-
     @Override
     public String toString() {
         return this.name;
@@ -116,5 +107,9 @@ public abstract class Equipment implements IEvent, IIventory {
             }
         }
         return isRequestTakeElementValid;
+    }
+
+    public String getName() {
+        return name;
     }
 }

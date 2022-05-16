@@ -12,6 +12,7 @@ public abstract class Potion extends Equipment {
 
     @Override
     public void action(CharacterInGame characterInGame, Menu menu) {
+        menu.displayEquipmentEvent(this.getName());
         Hero character = characterInGame.getCharacter();
         String userInput;
         boolean isEquipmentEventResolve = false;

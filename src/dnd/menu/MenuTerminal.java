@@ -61,11 +61,6 @@ public class MenuTerminal implements Menu{
     }
 
     @Override
-    public void displayEvent(String eventMessage) {
-        this.displayMessage(eventMessage);
-    }
-
-    @Override
     public void displayLife(int life) {
         this.displayMessage("Vous avez maintenant " + life + " points de vie");
     }
@@ -266,6 +261,21 @@ public class MenuTerminal implements Menu{
     @Override
     public void displayEnemyAlreadyDead() {
         this.displayMessage("Cet ennemi est déjà mort...");
+    }
+
+    @Override
+    public void displayEnemyEvent(String name) {
+        getMessage("vous êtes tombé sur : " + name);
+    }
+
+    @Override
+    public void displayEquipmentEvent(String name) {
+        getMessage("Vous avez trouvé : " + name);
+    }
+
+    @Override
+    public void displayVoidCellEvent() {
+        getMessage("Cette case est vide...");
     }
 
     public String getMessage(String message) {

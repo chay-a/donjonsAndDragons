@@ -33,6 +33,7 @@ public abstract class Distance extends Equipment{
      */
     @Override
     public void action(CharacterInGame characterInGame, Menu menu) {
+        menu.displayEquipmentEvent(this.getName());
         Hero character = characterInGame.getCharacter();
         if (character instanceof Elf) {
             super.takeEquipment(menu, character);
