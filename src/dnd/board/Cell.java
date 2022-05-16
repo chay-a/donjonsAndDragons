@@ -11,7 +11,7 @@ public class Cell {
      */
     public Cell () {
         double randomType =  (Math.random()) * 100;
-       if (randomType < 40) {
+       if (randomType < 45) {
            this.value = CellGenerator.createEnemy();
        } else if (randomType < 90) {
            this.value = CellGenerator.createEquipment();
