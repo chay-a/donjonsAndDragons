@@ -1,8 +1,7 @@
-package Menu;
+package menu;
 
 import character.Hero;
 import equipment.Equipment;
-import equipment.Potion;
 import inventory.IIventory;
 
 import java.util.List;

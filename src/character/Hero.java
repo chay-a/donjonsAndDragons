@@ -1,11 +1,10 @@
 package character;
 
-import Menu.Menu;
+import menu.Menu;
 import equipment.Equipment;
-import equipment.Potion;
 import inventory.IIventory;
 import inventory.Inventory;
-import List.CharacterInGame;
+import character.inGame.CharacterInGame;
 
 import java.util.ArrayList;
 import java.util.HashMap;

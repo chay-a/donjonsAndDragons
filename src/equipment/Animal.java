@@ -1,7 +1,7 @@
 package equipment;
 
-import List.CharacterInGame;
-import Menu.Menu;
+import character.inGame.CharacterInGame;
+import menu.Menu;
 import character.Hero;
 import character.hero.Nicker;
 

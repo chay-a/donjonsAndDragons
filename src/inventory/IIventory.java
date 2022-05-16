@@ -1,6 +1,6 @@
 package inventory;
 
-import Menu.Menu;
+import menu.Menu;
 
 import java.util.List;
 

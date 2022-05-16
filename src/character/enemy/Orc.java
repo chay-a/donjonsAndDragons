@@ -1,7 +1,7 @@
 package character.enemy;
 
-import List.CharacterInGame;
-import Menu.Menu;
+import character.inGame.CharacterInGame;
+import menu.Menu;
 import character.Enemy;
 import character.hero.Warrior;
 

@@ -12,9 +12,9 @@ public class Cell {
     public Cell () {
         double randomType =  (Math.random()) * 100;
        if (randomType < 40) {
-           this.value = BoardGenerator.createEnemy();
+           this.value = CellGenerator.createEnemy();
        } else if (randomType < 90) {
-           this.value = BoardGenerator.createEquipment();
+           this.value = CellGenerator.createEquipment();
        } else {
            this.value = new VoidCell();
        }

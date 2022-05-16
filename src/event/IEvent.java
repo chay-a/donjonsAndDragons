@@ -1,7 +1,7 @@
 package event;
 
-import List.CharacterInGame;
-import Menu.Menu;
+import character.inGame.CharacterInGame;
+import menu.Menu;
 public interface IEvent {
     String trigger();
 

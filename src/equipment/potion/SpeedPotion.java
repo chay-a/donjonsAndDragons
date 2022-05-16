@@ -1,8 +1,6 @@
 package equipment.potion;
 
-import List.CharacterInGame;
-import Menu.Menu;
-import character.Hero;
+import character.inGame.CharacterInGame;
 import equipment.Potion;
 
 public class SpeedPotion extends Potion {

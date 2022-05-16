@@ -1,6 +1,6 @@
 package equipment;
 
-import Menu.Menu;
+import menu.Menu;
 import character.Hero;
 import event.IEvent;
 import inventory.IIventory;

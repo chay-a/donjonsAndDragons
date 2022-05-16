@@ -3,12 +3,9 @@ package database;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import List.CharacterInGame;
-import Menu.Menu;
-import character.Character;
+import character.inGame.CharacterInGame;
+import menu.Menu;
 import character.Hero;
-import com.mysql.cj.protocol.Resultset;
-import com.mysql.cj.xdevapi.Result;
 
 public class Database {
     private Connection connection;

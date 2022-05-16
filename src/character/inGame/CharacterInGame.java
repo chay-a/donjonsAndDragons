@@ -1,4 +1,4 @@
-package List;
+package character.inGame;
 
 import character.Hero;
 

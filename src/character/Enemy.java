@@ -1,7 +1,7 @@
 package character;
 
-import List.CharacterInGame;
-import Menu.Menu;
+import character.inGame.CharacterInGame;
+import menu.Menu;
 import event.IEvent;
 
 public abstract class Enemy extends Character implements IEvent {

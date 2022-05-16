@@ -1,6 +1,6 @@
-import List.CharacterInGame;
-import Menu.Menu;
-import Menu.MenuTerminal;
+import character.inGame.CharacterInGame;
+import menu.Menu;
+import menu.MenuTerminal;
 import board.Board;
 
 import character.Hero;
@@ -189,7 +189,7 @@ public class Game {
             this.playGame();
         } catch (OutOfBoardCharacterException e) {
             this.menu.displayException(e.getMessage());
-            // TODO: 16/05/2022 check sort characters 
+            // TODO: 16/05/2022 check sort characters
             Collections.sort(this.characters);
             for (CharacterInGame character : this.characters) {
                 this.menu.displayRank(character.getCharacter().getName(), this.characters.indexOf(character) +1);

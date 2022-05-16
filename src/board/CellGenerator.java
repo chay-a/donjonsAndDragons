@@ -14,7 +14,7 @@ import equipment.spell.Lightning;
 import equipment.weapon.Club;
 import equipment.weapon.Sword;
 
-public class BoardGenerator {
+public class CellGenerator {
 
     public static Enemy createEnemy() {
         double random =  (Math.random()) * 7;

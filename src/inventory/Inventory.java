@@ -1,10 +1,10 @@
 package inventory;
 
-import Menu.Menu;
+import menu.Menu;
 import character.Hero;
 import equipment.Equipment;
 import equipment.Potion;
-import List.CharacterInGame;
+import character.inGame.CharacterInGame;
 
 import java.util.ArrayList;
 import java.util.List;

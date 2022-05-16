@@ -1,6 +1,6 @@
 package character;
 
-import Menu.Menu;
+import menu.Menu;
 
 public abstract class Character {
     protected String name;

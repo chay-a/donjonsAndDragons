@@ -1,7 +1,6 @@
 package equipment.potion;
 
-import List.CharacterInGame;
-import Menu.Menu;
+import character.inGame.CharacterInGame;
 import character.Hero;
 import equipment.Potion;
 
