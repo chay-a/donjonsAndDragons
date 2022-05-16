@@ -265,17 +265,17 @@ public class MenuTerminal implements Menu{
 
     @Override
     public void displayEnemyEvent(String name) {
-        getMessage("vous êtes tombé sur : " + name);
+        displayMessage("vous êtes tombé sur : " + name);
     }
 
     @Override
     public void displayEquipmentEvent(String name) {
-        getMessage("Vous avez trouvé : " + name);
+        displayMessage("Vous avez trouvé : " + name);
     }
 
     @Override
     public void displayVoidCellEvent() {
-        getMessage("Cette case est vide...");
+        displayMessage("Cette case est vide...");
     }
 
     public String getMessage(String message) {
