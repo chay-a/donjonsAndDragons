@@ -11,6 +11,7 @@ import dnd.dice.Dice;
 import dnd.dice.IDice;
 import dnd.event.IEvent;
 import dnd.exceptions.OutOfBoardCharacterException;
+import dnd.sort.SortByPosition;
 
 import java.util.*;
 
@@ -191,8 +192,7 @@ public class Game {
             this.playGame();
         } catch (OutOfBoardCharacterException e) {
             this.menu.displayException(e.getMessage());
-            // TODO: 16/05/2022 check sort characters
-            Collections.sort(this.characters);
+            Collections.sort(this.characters, Collections.reverseOrder(new SortByPosition()));
             for (CharacterInGame character : this.characters) {
                 this.menu.displayRank(character.getCharacter().getName(), this.characters.indexOf(character) +1);
             }

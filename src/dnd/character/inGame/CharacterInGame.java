@@ -2,7 +2,7 @@ package dnd.character.inGame;
 
 import dnd.character.Hero;
 
-public class CharacterInGame implements Comparable<CharacterInGame> {
+public class CharacterInGame {
     private Hero character;
     private int position;
     private boolean isDead;
@@ -37,8 +37,4 @@ public class CharacterInGame implements Comparable<CharacterInGame> {
         isDead = dead;
     }
 
-    @Override
-    public int compareTo(CharacterInGame other){
-        return Integer.compare(this.position, other.getPosition());
-    }
 }
