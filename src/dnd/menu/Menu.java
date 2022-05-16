@@ -72,4 +72,6 @@ public interface Menu {
     String requestDatabaseCharactersAction();
 
     String requestDatabaseCharacterNumber();
+
+    void displayEnemyAlreadyDead();
 }

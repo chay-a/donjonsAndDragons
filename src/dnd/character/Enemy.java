@@ -2,6 +2,7 @@ package dnd.character;
 
 import dnd.character.inGame.CharacterInGame;
 import dnd.exceptions.CharacterFleeException;
+import dnd.exceptions.EnemyAlreadyDeadException;
 import dnd.menu.Menu;
 import dnd.event.IEvent;
 
@@ -36,7 +37,11 @@ public abstract class Enemy extends Character implements IEvent {
                 switch (menu.requestFightAction()) {
                     case "attaque" :
                         isRequestAction = true;
-                        isFight = this.isFight(characterInGame, isFight, menu);
+                        try {
+                            isFight = this.isFight(characterInGame, isFight, menu);
+                        } catch (EnemyAlreadyDeadException e) {
+                            menu.displayEnemyAlreadyDead();
+                        }
                         break;
                     case "fuir":
                         throw new CharacterFleeException();
@@ -53,8 +58,11 @@ public abstract class Enemy extends Character implements IEvent {
      * @param isFight boolean
      * @return boolean
      */
-    private boolean isFight(CharacterInGame characterInGame, boolean isFight, Menu menu) {
+    private boolean isFight(CharacterInGame characterInGame, boolean isFight, Menu menu) throws EnemyAlreadyDeadException {
         Hero character = characterInGame.getCharacter();
+        if (this.getLife() <=0) {
+            throw new EnemyAlreadyDeadException();
+        }
         character.throwBlow(this, menu);
         if (this.getLife() <= 0) {
             menu.displayEnemyDead();

@@ -253,6 +253,11 @@ public class MenuTerminal implements Menu{
         return getMessage("Choississez le nombre correspondant au personnage");
     }
 
+    @Override
+    public void displayEnemyAlreadyDead() {
+        this.displayMessage("Cet ennemi est déjà mort...");
+    }
+
     public String getMessage(String message) {
         this.displayMessage(message);
         return this.scanner.nextLine();
