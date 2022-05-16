@@ -1,6 +1,7 @@
 package dnd.character;
 
 import dnd.character.inGame.CharacterInGame;
+import dnd.exceptions.CharacterFleeException;
 import dnd.menu.Menu;
 import dnd.event.IEvent;
 
@@ -27,7 +28,7 @@ public abstract class Enemy extends Character implements IEvent {
      * @param characterInGame CharacterInGame
      */
     @Override
-    public void action(CharacterInGame characterInGame, Menu menu) {
+    public void action(CharacterInGame characterInGame, Menu menu) throws CharacterFleeException {
         boolean isFight = true;
         while (isFight) {
             boolean isRequestAction = false;
@@ -38,10 +39,7 @@ public abstract class Enemy extends Character implements IEvent {
                         isFight = this.isFight(characterInGame, isFight, menu);
                         break;
                     case "fuir":
-                        isRequestAction = true;
-                        isFight = false;
-                        menu.displayFlee();
-                        characterInGame.setPosition(characterInGame.getPosition() - 2);
+                        throw new CharacterFleeException();
                     default:
                         break;
                 }

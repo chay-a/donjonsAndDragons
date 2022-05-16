@@ -1,6 +1,7 @@
 package dnd;
 
 import dnd.character.inGame.CharacterInGame;
+import dnd.exceptions.CharacterFleeException;
 import dnd.menu.Menu;
 import dnd.menu.MenuTerminal;
 import dnd.board.Board;
@@ -283,7 +284,12 @@ public class Game {
     private void playEvent(CharacterInGame characterInGame) {
         IEvent event = (IEvent) board.getBoard().get(characterInGame.getPosition()).getValue();
         this.menu.displayEvent(event.trigger());
-        event.action(characterInGame, this.menu);
+        try {
+            event.action(characterInGame, this.menu);
+        } catch (CharacterFleeException e) {
+            this.menu.displayFlee();
+            characterInGame.setPosition(characterInGame.getPosition() - 2);
+        }
         checkCharactersDead();
     }
 
