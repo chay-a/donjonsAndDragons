@@ -55,7 +55,7 @@ public abstract class Hero extends Character{
      * @return String
      */
     @Override
-    public String throwBlow(Character opponent) {
+    public void throwBlow(Character opponent, Menu menu) {
         int enemyLife = opponent.getLife();
         int attack;
         if (this.equipment != null) {
@@ -65,7 +65,7 @@ public abstract class Hero extends Character{
             attack = this.getStrength();
         }
         opponent.setLife(enemyLife - attack);
-        return "Vous avez enlevé " + attack + " points de vie à l'ennemi \nL'ennemi a " + opponent.getLife() + " points de vie";
+        menu.displayCharacterFight(attack, opponent.getLife());
     }
 
     /**

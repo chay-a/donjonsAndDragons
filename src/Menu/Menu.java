@@ -26,9 +26,9 @@ public interface Menu {
     void displayCharacterCantTakeEquipment();
     void displayCharacterDidntTakeEquipment();
     void displayInvalidUserInput();
-    void displayCharacterFight(String characterFight);
+    void displayCharacterFight(int attack, int opponentLife);
     void displayEnemyDead();
-    void displayEnemyAction(String eventMessage);
+    void displayEnemyAction(int attack, int opponentLife);
     void displayCharacterDead();
     String requestRestart();
     String requestCharacterName();

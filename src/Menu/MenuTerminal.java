@@ -102,8 +102,8 @@ public class MenuTerminal implements Menu{
     }
 
     @Override
-    public void displayCharacterFight(String characterFight) {
-        this.displayMessage(characterFight);
+    public void displayCharacterFight(int attack, int opponentLife) {
+        this.displayMessage("Vous avez enlevé " + attack + " points de vie à l'ennemi \nL'ennemi a " + opponentLife + " points de vie");
     }
 
     @Override
@@ -112,8 +112,8 @@ public class MenuTerminal implements Menu{
     }
 
     @Override
-    public void displayEnemyAction(String eventMessage) {
-        this.displayMessage(eventMessage);
+    public void displayEnemyAction(int attack, int opponentLife) {
+        this.displayMessage("L'ennemi vous a enlevé " + attack + " points de vie \nIl vous en reste " + opponentLife);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package character;
 
+import Menu.Menu;
+
 public abstract class Character {
     protected String name;
     protected int life;
@@ -72,6 +74,6 @@ public abstract class Character {
         this.life = life;
     }
 
-    public abstract String throwBlow(Character opponent);
+    public abstract void throwBlow(Character opponent, Menu menu);
 
 }

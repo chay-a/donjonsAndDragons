@@ -57,12 +57,12 @@ public abstract class Enemy extends Character implements IEvent {
      */
     private boolean isFight(CharacterInGame characterInGame, boolean isFight, Menu menu) {
         Hero character = characterInGame.getCharacter();
-        menu.displayCharacterFight(character.throwBlow(this));
+        character.throwBlow(this, menu);
         if (this.getLife() <= 0) {
             menu.displayEnemyDead();
             isFight = false;
         } else {
-            menu.displayEnemyAction(this.throwBlow(character));
+            this.throwBlow(character, menu);
             if (character.getLife() <= 0) {
                 isFight = false;
                 menu.displayCharacterDead();
@@ -73,9 +73,9 @@ public abstract class Enemy extends Character implements IEvent {
     }
 
     @Override
-    public String throwBlow(Character opponent) {
+    public void throwBlow(Character opponent, Menu menu) {
         int heroLife = opponent.getLife();
         opponent.setLife(heroLife - this.getStrength());
-        return "L'ennemi vous a enlevé " + this.getStrength() + " points de vie \nIl vous en reste " + opponent.getLife();
+        menu.displayEnemyAction(this.getStrength(), opponent.getLife());
     }
 }
