@@ -31,5 +31,6 @@ public class Elf extends Hero {
         this.setMaxLife(13);
         this.setMaxStrength(13);
         this.setEquipment(null);
+        this.resetInventory();
     }
 }

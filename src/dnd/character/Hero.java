@@ -83,6 +83,10 @@ public abstract class Hero extends Character{
         this.inventory.setEquipment(equipment , menu);
     }
 
+    public void resetInventory() {
+        this.inventory = null;
+    }
+
     /**
      * Get the French name of the dnd.character type
      * @param className String

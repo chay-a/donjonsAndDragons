@@ -31,6 +31,7 @@ public class Nicker extends Hero {
         this.setMaxLife(10);
         this.setMaxStrength(13);
         this.setEquipment(null);
+        this.resetInventory();
     }
 
 

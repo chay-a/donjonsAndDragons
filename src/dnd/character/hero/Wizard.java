@@ -30,6 +30,7 @@ public class Wizard extends Hero {
         this.setMaxLife(6);
         this.setMaxStrength(15);
         this.setEquipment(null);
+        this.resetInventory();
     }
 
 
