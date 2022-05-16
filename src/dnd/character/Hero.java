@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Hero extends Character{
-    private Integer id;
+    private Long id;
     private int maxLife;
     private int maxStrength;
     private Equipment equipment;
@@ -24,15 +24,15 @@ public abstract class Hero extends Character{
         put("Chopeur", "dnd.character.hero.Nicker");
     }};
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Hero(int life, int strength, Integer id, int maxLife, int maxStrength, Equipment equipment, Inventory inventory) {
+    public Hero(int life, int strength, Long id, int maxLife, int maxStrength, Equipment equipment, Inventory inventory) {
         super(life, strength);
         this.id = id;
         this.maxLife = maxLife;

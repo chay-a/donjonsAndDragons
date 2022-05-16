@@ -46,7 +46,17 @@ public class Database {
             int maxLife = character.getMaxLife();
             int maxStrength = character.getMaxStrength();
             if (character.getId() == null) {
-                rs = stmt.executeUpdate("INSERT INTO hero(name, life, strength, max_life, max_strength, type) VALUES ('" + name + "', " + life + ", " + strength + ", " + maxLife + ", " + maxStrength + ",'" + character.getClass().getSimpleName() + "');");
+                rs = stmt.executeUpdate("INSERT INTO hero(name, life, strength, max_life, max_strength, type) VALUES ('" + name + "', " + life + ", " + strength + ", " + maxLife + ", " + maxStrength + ",'" + character.getClass().getSimpleName() + "');", Statement.RETURN_GENERATED_KEYS);
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        character.setId(generatedKeys.getLong(1));
+                    }
+                    else {
+                        throw new SQLException("Creating user failed, no ID obtained.");
+                    }
+                } catch (Exception e) {
+
+                }
             } else {
                 rs = stmt.executeUpdate("UPDATE hero SET name = '" +name +"', life ="+ life+", strength = "+strength+", max_life ="+maxLife+", max_strength=" +maxStrength+" WHERE id="+character.getId()+";");
             }
@@ -62,8 +72,8 @@ public class Database {
         }
     }
 
-    public List<Integer> getCharacters(Menu menu) {
-        List<Integer> listId = new ArrayList<>();
+    public List<Long> getCharacters(Menu menu) {
+        List<Long> listId = new ArrayList<>();
         Statement stmt = null;
         ResultSet rs = null;
         try {
@@ -75,7 +85,7 @@ public class Database {
                 String life = rs.getString("life");
                 String strength = rs.getString("strength");
                 menu.displayCharacterDatabase(name, life, strength, i);
-                listId.add(rs.getInt("id"));
+                listId.add(rs.getLong("id"));
                 i++;
             }
         } catch (SQLException e) {
@@ -84,7 +94,7 @@ public class Database {
         return listId;
     }
 
-    public void removeCharacter(Integer integer, Menu menu) {
+    public void removeCharacter(Long integer, Menu menu) {
         Statement stmt = null;
         int rs;
         try {
@@ -95,7 +105,7 @@ public class Database {
         }
     }
 
-    public Hero getCharacter(Integer integer, Menu menu) {
+    public Hero getCharacter(Long integer, Menu menu) {
         Hero character = null;
         Statement stmt = null;
         ResultSet rs;

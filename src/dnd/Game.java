@@ -76,7 +76,7 @@ public class Game {
     private List<CharacterInGame> getCharactersFromDatabase(List<CharacterInGame> players, int nbPlayers) {
         String userInput;
         while(players.size()<=0) {
-            List<Integer> listId = this.database.getCharacters(this.menu);
+            List<Long> listId = this.database.getCharacters(this.menu);
             userInput = menu.requestDatabaseCharactersAction();
             switch (userInput) {
                 case "utilise":
@@ -97,7 +97,7 @@ public class Game {
      * Delete a character in the database
      * @param listId List<Integer>
      */
-    private void deleteDatabaseCharacter(List<Integer> listId) {
+    private void deleteDatabaseCharacter(List<Long> listId) {
         String userInput;
         userInput = menu.requestDatabaseCharacterNumber();
         int index = Integer.parseInt(userInput) -1;
@@ -110,10 +110,10 @@ public class Game {
      * Return a list of characters saved from the database according to the number of players
      * @param players List<CharacterInGame>
      * @param nbPlayers int
-     * @param listId list<Integer>
+     * @param listId list<Long>
      * @return List<CharacterInGame>
      */
-    private List<CharacterInGame> createCharactersFromDatabase(List<CharacterInGame> players, int nbPlayers, List<Integer> listId) {
+    private List<CharacterInGame> createCharactersFromDatabase(List<CharacterInGame> players, int nbPlayers, List<Long> listId) {
         String userInput;
         if (nbPlayers > 0) {
             for (int i = 1; i < nbPlayers + 1; i++) {
@@ -362,6 +362,7 @@ public class Game {
         String userInput = this.menu.requestRestart().toLowerCase();
         if ("recommencer".equalsIgnoreCase(userInput)) {
             resetCharacters();
+            this.board = new Board();
             this.start();
         } else if ("quitter".equalsIgnoreCase((userInput))) {
             menu.quitGame();
