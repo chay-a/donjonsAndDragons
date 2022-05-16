@@ -22,8 +22,6 @@ public class Game {
 
     public static void main(String[] args) {
      //   System.out.println(System.getProperty("user.language")+"-"+System.getProperty("user.country"));
-        Game game = new Game();
-        game.start();
     }
 
     /**
