@@ -5,7 +5,7 @@ import board.Board;
 
 import character.Hero;
 import database.Database;
-import dice.DiceScripted;
+import dice.Dice;
 import dice.IDice;
 import event.IEvent;
 import exceptions.OutOfBoardCharacterException;
@@ -30,7 +30,7 @@ public class Game {
     public Game() {
         this.menu = new MenuTerminal();
         this.database = new Database();
-        this.dice = new DiceScripted();
+        this.dice = new Dice();
         this.characters = this.createCharacters();
         this.board = this.createBoard();
     }
@@ -45,22 +45,8 @@ public class Game {
         String userInput = menu.requestCharactersSaved();
         switch(userInput) {
             case "oui":
-                while(players.size()<=0) {
-                    List<Integer> listId = this.database.getCharacters(this.menu);
-                    System.out.println(listId);
-                    userInput = menu.requestDatabaseCharactersAction();
-                    switch (userInput) {
-                        case "utilise":
-                            List<CharacterInGame> playersList = getDatabaseCharacters(players, nbPlayers, listId);
-                            if (playersList != null) return playersList;
-                        case "supprime":
-                            deleteDatabaseCharacter(listId);
-                            break;
-                        default:
-                            menu.displayWrongType();
-                            break;
-                    }
-                }
+                List<CharacterInGame> playersList = getCharactersFromDatabase(players, nbPlayers);
+                if (playersList != null) return playersList;
             case "non":
                 if (nbPlayers > 0) {
                     for (int i = 1; i < nbPlayers + 1; i++) {
@@ -70,12 +56,31 @@ public class Game {
                 }
                 break;
             default:
-                menu.displayWrongType();
+                menu.displayInvalidUserInput();
                 break;
         }
-
         menu.quitGame();
         return players;
+    }
+
+    private List<CharacterInGame> getCharactersFromDatabase(List<CharacterInGame> players, int nbPlayers) {
+        String userInput;
+        while(players.size()<=0) {
+            List<Integer> listId = this.database.getCharacters(this.menu);
+            userInput = menu.requestDatabaseCharactersAction();
+            switch (userInput) {
+                case "utilise":
+                    List<CharacterInGame> playersList = createCharactersFromDatabase(players, nbPlayers, listId);
+                    if (playersList != null) return playersList;
+                case "supprime":
+                    deleteDatabaseCharacter(listId);
+                    break;
+                default:
+                    menu.displayWrongType();
+                    break;
+            }
+        }
+        return null;
     }
 
     private void deleteDatabaseCharacter(List<Integer> listId) {
@@ -87,7 +92,7 @@ public class Game {
         }
     }
 
-    private List<CharacterInGame> getDatabaseCharacters(List<CharacterInGame> players, int nbPlayers, List<Integer> listId) {
+    private List<CharacterInGame> createCharactersFromDatabase(List<CharacterInGame> players, int nbPlayers, List<Integer> listId) {
         String userInput;
         if (nbPlayers > 0) {
             for (int i = 1; i < nbPlayers + 1; i++) {
@@ -184,6 +189,7 @@ public class Game {
             this.playGame();
         } catch (OutOfBoardCharacterException e) {
             this.menu.displayException(e.getMessage());
+            // TODO: 16/05/2022 check sort characters 
             Collections.sort(this.characters);
             for (CharacterInGame character : this.characters) {
                 this.menu.displayRank(character.getCharacter().getName(), this.characters.indexOf(character) +1);
@@ -245,16 +251,21 @@ public class Game {
                         break;
                 }
             }
-            int diceValue = this.dice.throwDice();
-            this.menu.displayDiceValue(diceValue);
-            character.setPosition(character.getPosition() + diceValue);
-            this.menu.displayCharacterPositionOnBoard(character.getPosition() + 1, this.board.getBoardLength());
-            if (character.getPosition() >= this.board.getBoardLength()) {
-                isGamePlaying = false;
-                throw new OutOfBoardCharacterException("Vous avez fini la partie");
-            }
-            playEvent(character);
+            isGamePlaying = diceThrew(isGamePlaying, character);
         }
+        return isGamePlaying;
+    }
+
+    private boolean diceThrew(boolean isGamePlaying, CharacterInGame character) throws OutOfBoardCharacterException {
+        int diceValue = this.dice.throwDice();
+        this.menu.displayDiceValue(diceValue);
+        character.setPosition(character.getPosition() + diceValue);
+        this.menu.displayCharacterPositionOnBoard(character.getPosition() + 1, this.board.getBoardLength());
+        if (character.getPosition() >= this.board.getBoardLength()) {
+            isGamePlaying = false;
+            throw new OutOfBoardCharacterException("Vous avez fini la partie");
+        }
+        playEvent(character);
         return isGamePlaying;
     }
 
@@ -271,7 +282,10 @@ public class Game {
         IEvent event = (IEvent) board.getBoard().get(characterInGame.getPosition()).getValue();
         this.menu.displayEvent(event.trigger());
         event.action(characterInGame, this.menu);
-        //////////////////////////////
+        checkCharactersDead();
+    }
+
+    private void checkCharactersDead() {
         int nbCharactersDead = 0;
         for (CharacterInGame character1 : this.characters) {
             if (character1.isDead()) {
@@ -281,7 +295,6 @@ public class Game {
         if (nbCharactersDead == this.characters.size()) {
             this.endGame();
         }
-        /////////////////////////////////
     }
 
 
@@ -307,17 +320,21 @@ public class Game {
     private void restart() {
         String userInput = this.menu.requestRestart().toLowerCase();
         if ("recommencer".equalsIgnoreCase(userInput)) {
-            for (CharacterInGame character : this.characters) {
-                character.getCharacter().reset();
-                character.setPosition(0);
-                character.setDead(false);
-            }
+            resetCharacters();
             this.start();
         } else if ("quitter".equalsIgnoreCase((userInput))) {
             menu.quitGame();
         } else if ("personnage".equalsIgnoreCase(userInput)) {
             Game game = new Game();
             game.start();
+        }
+    }
+
+    private void resetCharacters() {
+        for (CharacterInGame character : this.characters) {
+            character.getCharacter().reset();
+            character.setPosition(0);
+            character.setDead(false);
         }
     }
 

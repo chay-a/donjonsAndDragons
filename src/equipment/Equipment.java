@@ -76,9 +76,7 @@ public abstract class Equipment implements IEvent, IIventory {
     public void fullInventory(Menu menu, List<IIventory> list) {
         boolean isRequestTakeElementValid = false;
         while(!isRequestTakeElementValid) {
-            // You can't take this potion cause your Inventory is full
             menu.displayFullInventory();
-            // Ask to change with another element
             String userInput = menu.requestInventoryElementChange().toLowerCase();
             switch (userInput) {
                 case "oui":
