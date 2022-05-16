@@ -36,12 +36,12 @@ public class Game {
         this.database = new Database();
         this.dice = new Dice();
         this.characters = this.createCharacters();
-        this.board = this.createBoard();
+        this.board = new Board();
     }
 
     /**
-     * Create the number of characters according to the user input
-     * @return Map<Hero, Integer>
+     * Return a list of characters created from the database or from scratch. The number of players is chosen by the user
+     * @return List<CharacterInGame>
      */
     public List<CharacterInGame> createCharacters() {
         List<CharacterInGame> players = new ArrayList<CharacterInGame>();
@@ -67,6 +67,12 @@ public class Game {
         return players;
     }
 
+    /**
+     * Return list of characters from database according to user choice, characters can be restored or deleted
+     * @param players List<CharacterInGame>
+     * @param nbPlayers int
+     * @return List<CharacterInGame>
+     */
     private List<CharacterInGame> getCharactersFromDatabase(List<CharacterInGame> players, int nbPlayers) {
         String userInput;
         while(players.size()<=0) {
@@ -87,6 +93,10 @@ public class Game {
         return null;
     }
 
+    /**
+     * Delete a character in the database
+     * @param listId List<Integer>
+     */
     private void deleteDatabaseCharacter(List<Integer> listId) {
         String userInput;
         userInput = menu.requestDatabaseCharacterNumber();
@@ -96,6 +106,13 @@ public class Game {
         }
     }
 
+    /**
+     * Return a list of characters saved from the database according to the number of players
+     * @param players List<CharacterInGame>
+     * @param nbPlayers int
+     * @param listId list<Integer>
+     * @return List<CharacterInGame>
+     */
     private List<CharacterInGame> createCharactersFromDatabase(List<CharacterInGame> players, int nbPlayers, List<Integer> listId) {
         String userInput;
         if (nbPlayers > 0) {
@@ -114,8 +131,8 @@ public class Game {
     }
 
     /**
-     * Create a dnd.character from the user selection
-     * @return Character
+     * Return a character created from scratch
+     * @return Hero
      */
     private Hero createCharacter() {
         Hero character= null;
@@ -137,7 +154,7 @@ public class Game {
      * @param isInfoValid boolean
      * @return boolean
      */
-    private Boolean isInformationValid(boolean isInfoValid) {
+    private boolean isInformationValid(boolean isInfoValid) {
         String userInput = this.menu.validateCharacter();
         if ("quitter".equalsIgnoreCase(userInput)) {
             menu.quitGame();
@@ -149,7 +166,7 @@ public class Game {
     }
 
     /**
-     * Ask the user for the dnd.character name
+     * Return the name of the character provided by the user
      * @return String
      */
     private String chooseCharacterName() {
@@ -161,9 +178,9 @@ public class Game {
     }
 
 
-
     /**
-     * Select dnd.character type
+     * Return an instance of class that extends the class Hero chosen by the user
+     * @return Hero
      */
     private Hero selectCharacterType() {
         Hero character = null;
@@ -186,7 +203,7 @@ public class Game {
     }
 
     /**
-     * start the game
+     * Start the game and rank player at the end
      */
     public void start() {
         try {
@@ -212,7 +229,7 @@ public class Game {
     }
 
     /**
-     * Play one round of the game
+     * Play one round of the game. A round correspond to all characters playing once
      * @param isGamePlaying boolean
      * @return boolean
      * @throws OutOfBoardCharacterException Exception
@@ -259,6 +276,13 @@ public class Game {
         return isGamePlaying;
     }
 
+    /**
+     * Return a boolean that change or not the state of the game after event played on the cell once dice threw
+     * @param isGamePlaying boolean
+     * @param character CharacterInGame
+     * @return boolean
+     * @throws OutOfBoardCharacterException OutOfBoardException
+     */
     private boolean diceThrew(boolean isGamePlaying, CharacterInGame character) throws OutOfBoardCharacterException {
         int diceValue = this.dice.throwDice();
         this.menu.displayDiceValue(diceValue);
@@ -272,13 +296,17 @@ public class Game {
         return isGamePlaying;
     }
 
+    /**
+     * Play the actions link to the character inventory
+     * @param character CharacterInGame
+     */
     private void inventoryAction(CharacterInGame character) {
         this.menu.displayInventory(character.getCharacter().getInventory());
         character.getCharacter().inventoryActions(character, this.menu);
     }
 
     /**
-     * Action according to Event
+     * Play the action linked to the board's cell. Possibility to catch a CharacterFleeException that make the character go back
      * @param characterInGame CharacterInGame
      */
     private void playEvent(CharacterInGame characterInGame) {
@@ -292,6 +320,9 @@ public class Game {
         checkCharactersDead();
     }
 
+    /**
+     * Check the number of characters that are dead. If all characters are dead then call endGame method.
+     */
     private void checkCharactersDead() {
         int nbCharactersDead = 0;
         for (CharacterInGame character1 : this.characters) {
@@ -306,7 +337,7 @@ public class Game {
 
 
     /**
-     * Trigger the end of the game menus
+     * Ask if the user want to save their characters, and call restart method
      */
     private void endGame() {
         String userInput = menu.requestGameSaving();
@@ -324,6 +355,9 @@ public class Game {
         this.restart();
     }
 
+    /**
+     * Ask if the user want to restart the game from scratch, with already played with characters or quit game
+     */
     private void restart() {
         String userInput = this.menu.requestRestart().toLowerCase();
         if ("recommencer".equalsIgnoreCase(userInput)) {
@@ -337,6 +371,9 @@ public class Game {
         }
     }
 
+    /**
+     * Reset the characters value before restarting
+     */
     private void resetCharacters() {
         for (CharacterInGame character : this.characters) {
             character.getCharacter().reset();
@@ -345,12 +382,5 @@ public class Game {
         }
     }
 
-    /**
-     * Create the dnd.board for the game
-     * @return Board
-     */
-    private Board createBoard() {
-        return new Board();
-    }
 
 }
