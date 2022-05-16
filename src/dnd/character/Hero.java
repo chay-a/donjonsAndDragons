@@ -50,8 +50,9 @@ public abstract class Hero extends Character{
     }
 
     /**
-     * Return the result of the fight
-     * @return String
+     * Take the opponent and subtract to its life the strength of the object
+     * @param opponent Character
+     * @param menu Menu
      */
     @Override
     public void throwBlow(Character opponent, Menu menu) {
@@ -186,6 +187,11 @@ public abstract class Hero extends Character{
         return inventory;
     }
 
+    /**
+     * Ask the user the wanted action and call method  according to action
+     * @param characterInGame CharacterInGame
+     * @param menu Menu
+     */
     public void inventoryActions(CharacterInGame characterInGame, Menu menu) {
         String userInput = menu.requestInventoryAction();
         List<Equipment> inventory = this.getInventory();

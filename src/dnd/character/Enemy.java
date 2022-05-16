@@ -16,8 +16,10 @@ public abstract class Enemy extends Character implements IEvent {
     }
 
     /**
-     * Play the action of the dnd.event
+     * Play a fight against an enemy. Each turn the user can attack or flee. If the user flee it throws a CharacterFleeException
      * @param characterInGame CharacterInGame
+     * @param menu Menu
+     * @throws CharacterFleeException Exception
      */
     @Override
     public void action(CharacterInGame characterInGame, Menu menu) throws CharacterFleeException {
@@ -45,9 +47,10 @@ public abstract class Enemy extends Character implements IEvent {
     }
 
     /**
-     * Play a round of a fight
+     * Play a round of a fight with character attacking first then enemy. Can throw an EnemyAlreadyDeadException if the enemy is dead when the character arrived at the cell
      * @param characterInGame characterInGame
      * @param isFight boolean
+     * @throws EnemyAlreadyDeadException Exception
      * @return boolean
      */
     private boolean isFight(CharacterInGame characterInGame, boolean isFight, Menu menu) throws EnemyAlreadyDeadException {
@@ -70,6 +73,11 @@ public abstract class Enemy extends Character implements IEvent {
         return isFight;
     }
 
+    /**
+     * Take the opponent and subtract to its life the strength of the object
+     * @param opponent Character
+     * @param menu Menu
+     */
     @Override
     public void throwBlow(Character opponent, Menu menu) {
         int heroLife = opponent.getLife();

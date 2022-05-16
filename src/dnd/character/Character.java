@@ -16,6 +16,10 @@ public abstract class Character {
         this(null, life, strength);
     }
 
+    /**
+     * Set the name of the strength
+     * @param strength int
+     */
     public void setStrength(int strength) {
         this.strength = strength;
     }
@@ -74,6 +78,11 @@ public abstract class Character {
         this.life = life;
     }
 
+    /**
+     * Character throw a blow
+     * @param opponent Character
+     * @param menu Menu
+     */
     public abstract void throwBlow(Character opponent, Menu menu);
 
 }
