@@ -19,6 +19,7 @@ public class Hunter extends Enemy {
         if (characterInGame.getCharacter() instanceof Nicker) {
             super.action(characterInGame, menu);
         } else {
+            menu.displayEnemyEvent(this.getName());
             menu.displayEnemyDoesntCare();
         }
     }

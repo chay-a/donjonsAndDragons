@@ -19,6 +19,7 @@ public class BadSpirit extends Enemy {
         if (characterInGame.getCharacter() instanceof Wizard) {
             super.action(characterInGame, menu);
         } else {
+            menu.displayEnemyEvent(this.getName());
             menu.displayEnemyDoesntCare();
         }
     }

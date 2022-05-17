@@ -19,6 +19,7 @@ public class Orc extends Enemy {
         if (characterInGame.getCharacter() instanceof Warrior) {
             super.action(characterInGame, menu);
         } else {
+            menu.displayEnemyEvent(this.getName());
             menu.displayEnemyDoesntCare();
         }
     }

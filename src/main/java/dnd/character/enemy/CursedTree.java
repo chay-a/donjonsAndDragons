@@ -19,6 +19,7 @@ public class CursedTree extends Enemy {
         if (characterInGame.getCharacter() instanceof Elf) {
             super.action(characterInGame, menu);
         } else {
+            menu.displayEnemyEvent(this.getName());
             menu.displayEnemyDoesntCare();
         }
     }
