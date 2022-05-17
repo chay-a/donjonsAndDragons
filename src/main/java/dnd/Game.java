@@ -2,6 +2,7 @@ package dnd;
 
 import dnd.character.inGame.CharacterInGame;
 import dnd.exceptions.CharacterFleeException;
+import dnd.menu.Gui;
 import dnd.menu.Menu;
 import dnd.menu.MenuTerminal;
 import dnd.board.Board;
@@ -23,17 +24,20 @@ public class Game {
     private Menu menu;
     private IDice dice;
     private Database database;
+    private boolean isDatabase;
 
-    public static void main(String[] args) {
-     //   System.out.println(System.getProperty("user.language")+"-"+System.getProperty("user.country"));
-    }
 
     /**
      * Hydrate dnd.character and dnd.board with the creation of a new dnd.character and a new dnd.board
      */
-    public Game() {
+    public Game(boolean isDatabase) {
         this.menu = new MenuTerminal();
-        this.database = new Database();
+        if (isDatabase) {
+            this.database = new Database();
+            this.isDatabase = true;
+        } else {
+            this.isDatabase = false;
+        }
         this.dice = new Dice();
         this.characters = this.createCharacters();
         this.board = new Board();
@@ -46,25 +50,41 @@ public class Game {
     public List<CharacterInGame> createCharacters() {
         List<CharacterInGame> players = new ArrayList<CharacterInGame>();
         int nbPlayers = Integer.parseInt(this.menu.requestPlayersNb());
+        List<CharacterInGame> playersList = new ArrayList<>();
+        if (this.isDatabase) {
+            playersList = databaseRequest(players, nbPlayers);
+        } else {
+            if (createCharactersFromScratch(players, nbPlayers)) return players;
+        }
+        if (playersList != null) return playersList;
+        menu.quitGame();
+        return players;
+    }
+
+    private List<CharacterInGame> databaseRequest(List<CharacterInGame> players, int nbPlayers) {
         String userInput = menu.requestCharactersSaved();
         switch(userInput) {
             case "oui":
                 List<CharacterInGame> playersList = getCharactersFromDatabase(players, nbPlayers);
                 if (playersList != null) return playersList;
             case "non":
-                if (nbPlayers > 0) {
-                    for (int i = 1; i < nbPlayers + 1; i++) {
-                        players.add(new CharacterInGame(this.createCharacter()));
-                    }
-                    return players;
-                }
+                if (createCharactersFromScratch(players, nbPlayers)) return players;
                 break;
             default:
                 menu.displayInvalidUserInput();
                 break;
         }
-        menu.quitGame();
-        return players;
+        return null;
+    }
+
+    private boolean createCharactersFromScratch(List<CharacterInGame> players, int nbPlayers) {
+        if (nbPlayers > 0) {
+            for (int i = 1; i < nbPlayers + 1; i++) {
+                players.add(new CharacterInGame(this.createCharacter()));
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -340,6 +360,13 @@ public class Game {
      * Ask if the user want to save their characters, and call restart method
      */
     private void endGame() {
+        if (this.isDatabase) {
+            endGameDatabase();
+        }
+        this.restart();
+    }
+
+    private void endGameDatabase() {
         String userInput = menu.requestGameSaving();
         switch (userInput) {
             case "oui" :
@@ -351,8 +378,6 @@ public class Game {
             default:
                 break;
         }
-
-        this.restart();
     }
 
     /**
@@ -367,7 +392,12 @@ public class Game {
         } else if ("quitter".equalsIgnoreCase((userInput))) {
             menu.quitGame();
         } else if ("personnage".equalsIgnoreCase(userInput)) {
-            Game game = new Game();
+            Game game;
+            if (this.isDatabase) {
+                game = new Game(true);
+            } else {
+                game = new Game(false);
+            }
             game.start();
         }
     }
