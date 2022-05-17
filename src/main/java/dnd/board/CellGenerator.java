@@ -9,6 +9,7 @@ import dnd.equipment.distance.Arbalest;
 import dnd.equipment.distance.Bow;
 import dnd.equipment.potion.LargePotion;
 import dnd.equipment.potion.SmallPotion;
+import dnd.equipment.potion.SpeedPotion;
 import dnd.equipment.spell.Fireball;
 import dnd.equipment.spell.Lightning;
 import dnd.equipment.weapon.Club;
@@ -81,9 +82,11 @@ public class CellGenerator {
     }
 
     public static Potion createPotion() {
-        double random =  (Math.random()) * 2;
+        double random =  (Math.random()) * 3;
         if (random < 1) {
             return new SmallPotion();
+        } else if (random < 2) {
+            return new SpeedPotion();
         }
         return new LargePotion();
     }
